@@ -1,6 +1,6 @@
 <?php
 /* Plugin Name: Windros Subscription
-* Plugin URI: https://ancil.dev/windros-subscrtiption
+* Plugin URI: https://github.com/ancilkanto/windros-subscription
  * Description: <code><strong>Windros Subscription</strong></code> allows enabling automatic recurring payments on your products. Once you buy a subscription-based product, the plugin will renew the payment automatically based on your own settings.
  * Version: 1.0
  * Author: Ancil
