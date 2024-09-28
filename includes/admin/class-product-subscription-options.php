@@ -82,7 +82,7 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
                     }
                     
                 ?>
-                <div class="subscription-fields" <?php echo !$enable_subscription_fields ? ' style="display: none;"' : ''; ?> >            
+                <!-- <div class="subscription-fields" <?php echo !$enable_subscription_fields ? ' style="display: none;"' : ''; ?> >            
                     <div class="options_group">
                         <?php
                             // Custom field for "Manufacturer"
@@ -96,7 +96,7 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
                             );
                         ?>
                     </div>
-                </div>
+                </div> -->
             </div>
         
             <?php
