@@ -21,14 +21,27 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
         }
 
         public function admin_scripts() {
-            wp_enqueue_script('windros-admin', 
-                WINDROS_URL .'assets/javascripts/admin.js',   //
-                array ('jquery'),					//depends on these, however, they are registered by core already, so no need to enqueue them.
+            // Scripts
+            wp_register_script('chosen', 
+                WINDROS_URL .'assets/javascripts/chosen.jquery.min.js',
+                array ('jquery'),					
                 false, false);
-            // wp_enqueue_script('windros-admin');
+            wp_register_script('windros-admin', 
+                WINDROS_URL .'assets/javascripts/admin.js', 
+                array ('jquery', 'chosen'),					
+                false, false);
+
+            // Styles
+
+            wp_register_style('chosen', 
+                WINDROS_URL .'assets/stylesheets/chosen.min.css'
+            );
         }
 
         public function add_subscription_settings_tab( $tabs ) {
+            wp_enqueue_script('windros-admin');
+            wp_enqueue_style('chosen');
+
             $tabs = array_merge(
                 $tabs,
                 array(
@@ -47,7 +60,7 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
         public function subscription_settings_tab_icon() {
             echo '<style>
                 #woocommerce-product-data ul.wc-tabs li.windros-subscription-settings_options a::before {
-                    content: "\f515";
+                    content: "\f508";
                 } 
             </style>';
         }
@@ -82,21 +95,30 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
                     }
                     
                 ?>
-                <!-- <div class="subscription-fields" <?php echo !$enable_subscription_fields ? ' style="display: none;"' : ''; ?> >            
+                <div class="subscription-fields" <?php echo !$enable_subscription_fields ? ' style="display: none;"' : ''; ?> >            
                     <div class="options_group">
                         <?php
-                            // Custom field for "Manufacturer"
-                            woocommerce_wp_text_input( 
-                                array( 
-                                    'id'          => '_manufacturer_name_2', 
-                                    'label'       => __('Manufacturer Name', 'woocommerce'), 
-                                    'desc_tip'    => 'true',
-                                    'description' => __('Enter the manufacturer name for this product.', 'woocommerce')
+                            $selected_fequencies = trim(get_post_meta( get_the_ID(), '_subscription_frequencies', true ));
+                            
+                            if($selected_fequencies == ''){
+                                $selected_fequencies = array(strval(array_key_first(WINDROS_FREQUENCY)));
+                            }else{
+                                $selected_fequencies = explode(',', $selected_fequencies);
+                            }
+
+                            woocommerce_wp_select( array(
+                                'id'          => '_subscription_frequencies[]',
+                                'label'       => __( 'Set Frquencies', 'woocommerce' ),
+                                'options'     => WINDROS_FREQUENCY,
+                                'wrapper_class' => 'chosen-wraper',
+                                'value'       => $selected_fequencies,
+                                'custom_attributes' => array(
+                                    'multiple' => 'multiple',   // Enabling multi-select                                    
                                 )
-                            );
+                            ));
                         ?>
-                    </div>
-                </div> -->
+                    </div>                    
+                </div>
             </div>
         
             <?php
@@ -107,9 +129,16 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
             
             $custom_field_value = isset($_POST['_enable_subscription']) ? sanitize_text_field($_POST['_enable_subscription']) : '';
             update_post_meta($post_id, '_enable_subscription', $custom_field_value);
+
             
-            $custom_field_value = isset($_POST['_manufacturer_name_2']) ? sanitize_text_field($_POST['_manufacturer_name_2']) : '';
-            update_post_meta($post_id, '_manufacturer_name_2', $custom_field_value);
+            $selected_fequencies = isset($_POST['_subscription_frequencies']) ? $_POST['_subscription_frequencies'] : array();
+            
+            if(empty($selected_fequencies)){
+                $selected_fequencies = array(strval(array_key_first(WINDROS_FREQUENCY)));
+            }
+            $selected_fequencies = sanitize_text_field(implode(',', $selected_fequencies));
+            
+            update_post_meta($post_id, '_subscription_frequencies', $selected_fequencies);
         }
     }
 }

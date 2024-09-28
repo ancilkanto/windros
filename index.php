@@ -11,14 +11,24 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$windros_subscription_frequencies = array(
+    '7' => __('1 Week', 'windros-subscription'),
+    '14' => __('2 Weeks', 'windros-subscription'),
+    '21' => __('3 Weeks', 'windros-subscription'),
+    '28' => __('4 Weeks', 'windros-subscription')
+);
+
 ! defined( 'WINDROS_DIR' ) && define( 'WINDROS_DIR', plugin_dir_path( __FILE__ ) );
 ! defined( 'WINDROS_URL' ) && define( 'WINDROS_URL', plugin_dir_url(__FILE__) );
 ! defined( 'WINDROS_INIT' ) && define( 'WINDROS_INIT', plugin_basename( __FILE__ ) );
 ! defined( 'WINDROS_INC' ) && define( 'WINDROS_INC', WINDROS_DIR . 'includes/' );
+! defined( 'WINDROS_FREQUENCY' ) && define( 'WINDROS_FREQUENCY', $windros_subscription_frequencies );
+
 
 
 
 require_once WINDROS_INC.'admin/class-product-subscription-options.php';
+
 
 
 

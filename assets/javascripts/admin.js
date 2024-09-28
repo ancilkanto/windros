@@ -8,6 +8,8 @@
                 $('.subscription-fields').css('display', 'none');
             }
         });
+
+        $(".chosen-wraper select").chosen();
         
     });
     
