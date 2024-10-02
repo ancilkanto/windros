@@ -82,8 +82,8 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
                         woocommerce_wp_checkbox( array(
                             'id'            => '_enable_subscription',
                             'wrapper_class' => 'show_if_simple',
-                            'label'         => __( 'Enable Subscription' ),
-                            'description'   => __( 'check if you want to enable product subscription' )
+                            'label'         => __( 'Enable Subscription', 'windros-subscription' ),
+                            'description'   => __( 'check if you want to enable product subscription', 'windros-subscription' )
                         ) );
                     ?>
                 </div>
@@ -108,7 +108,7 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
 
                             woocommerce_wp_select( array(
                                 'id'          => '_subscription_frequencies[]',
-                                'label'       => __( 'Set Frquencies', 'woocommerce' ),
+                                'label'       => __( 'Set Frquencies', 'windros-subscription' ),
                                 'options'     => WINDROS_FREQUENCY,
                                 'wrapper_class' => 'chosen-wraper',
                                 'value'       => $selected_fequencies,
