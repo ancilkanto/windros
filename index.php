@@ -12,10 +12,10 @@
 defined( 'ABSPATH' ) || exit;
 
 $windros_subscription_frequencies = array(
-    '7' => __('1 Week', 'windros-subscription'),
-    '14' => __('2 Weeks', 'windros-subscription'),
-    '21' => __('3 Weeks', 'windros-subscription'),
-    '28' => __('4 Weeks', 'windros-subscription')
+    '7' => __('Every 1 Week', 'windros-subscription'),
+    '14' => __('Every 2 Weeks', 'windros-subscription'),
+    '21' => __('Every 3 Weeks', 'windros-subscription'),
+    '28' => __('Every 4 Weeks', 'windros-subscription')
 );
 
 ! defined( 'WINDROS_DIR' ) && define( 'WINDROS_DIR', plugin_dir_path( __FILE__ ) );
@@ -28,21 +28,18 @@ $windros_subscription_frequencies = array(
 
 
 require_once WINDROS_INC.'admin/class-product-subscription-options.php';
+require_once WINDROS_INC.'admin/class-register-shortcodes.php';
+require_once WINDROS_INC.'admin/class-modify-product-loop-data.php';
+require_once WINDROS_INC.'admin/class-modify-product-single-page.php';
+require_once WINDROS_INC.'admin/class-subscription-cart.php';
+require_once WINDROS_INC.'admin/class-subscription-checkout.php';
 
 
 
 
 
 // Add a custom label next to the product title in WooCommerce admin products list
-add_filter('manage_edit-product_columns', 'add_custom_product_label_column');
 add_action('manage_product_posts_custom_column', 'show_custom_label_in_product_column', 100, 2);
-
-// Add a custom column header (if needed)
-function add_custom_product_label_column($columns) {
-    // You can add a new column here if you want to show labels in a separate column
-    // For example: $columns['custom_label'] = __('Custom Label', 'your-textdomain');
-    return $columns;
-}
 
 // Display custom label next to the product title in WooCommerce admin
 function show_custom_label_in_product_column($column, $post_id) {
@@ -62,17 +59,3 @@ function show_custom_label_in_product_column($column, $post_id) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>

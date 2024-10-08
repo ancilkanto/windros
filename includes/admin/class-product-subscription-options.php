@@ -1,5 +1,7 @@
 <?php
 
+defined( 'WINDROS_INIT' ) || exit;      // Exit if accessed directly.
+
 if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
     class Admin_Product_Subscription_Options {
         public function __construct() {
@@ -36,6 +38,8 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
             wp_register_style('chosen', 
                 WINDROS_URL .'assets/stylesheets/chosen.min.css'
             );
+            
+            
         }
 
         public function add_subscription_settings_tab( $tabs ) {
@@ -95,7 +99,7 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
                     }
                     
                 ?>
-                <div class="subscription-fields" <?php echo !$enable_subscription_fields ? ' style="display: none;"' : ''; ?> >            
+                <div class="subscription-fields <?php echo !$enable_subscription_fields ? ' hide-fields-on-load' : ''; ?>" >            
                     <div class="options_group">
                         <?php
                             $selected_fequencies = trim(get_post_meta( get_the_ID(), '_subscription_frequencies', true ));
