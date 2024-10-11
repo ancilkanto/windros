@@ -30,6 +30,7 @@ $windros_subscription_frequencies = array(
 require_once WINDROS_INC.'admin/class-product-subscription-options.php';
 require_once WINDROS_INC.'admin/class-register-shortcodes.php';
 require_once WINDROS_INC.'admin/class-modify-product-loop-data.php';
+require_once WINDROS_INC.'admin/class-modify-product-listing-loop.php';
 require_once WINDROS_INC.'admin/class-modify-product-single-page.php';
 require_once WINDROS_INC.'admin/class-subscription-cart.php';
 require_once WINDROS_INC.'admin/class-subscription-checkout.php';
