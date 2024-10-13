@@ -15,11 +15,38 @@ if ( ! class_exists( 'Windros_Subscription_Cart' ) ) {
 
 
         public function validate_subscription_schedule_field( $passed, $product_id, $quantity ) {
+            $valid_cart = true;
             if( isset( $_POST['subscription-schedule'] ) && empty( $_POST['subscription-schedule'] ) ) {
                 wc_add_notice( __( 'Please select a subscription schedule.', 'windros-subscription' ), 'error' );
                 return false;
+            }else{
+                if($_POST['subscription-schedule'] != NULL){
+                    $cart = WC()->cart; // The WC_Cart Object
+
+                    // When cart is not empty 
+                    if ( ! $cart->is_empty() ) {
+                        // Loop through cart items
+                        foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
+                            // If the cart item is not the current defined product ID
+                            
+                                if( isset($cart_item['subscription-schedule']) ) {
+                                    wc_add_notice( __( 'You cannot purchase multiple subscriptions at the same time.', 'windros-subscription' ), 'error' );
+                                    $valid_cart = false;
+                                } 
+                            
+                            
+                        }
+                    }
+                }
+                
             }
-            return $passed;
+
+            
+            if($valid_cart){
+                return $passed;
+            }else{
+                return false;
+            }
         }
 
         public function add_subscription_schedule_to_cart_item_data( $cart_item_data, $product_id ) {

@@ -77,7 +77,7 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                 
                 $enable_subscription = get_post_meta( $product->get_id(), '_enable_subscription', true ); // Get the data - Checbox 1
                 if( ! empty( $enable_subscription ) && $enable_subscription == 'yes' ){
-                    $wp_parse_args['class'] = $wp_parse_args['class'].' subscription';
+                    $wp_parse_args['class'] = $wp_parse_args['class'].'_subscription';
                 }
             }
             return $wp_parse_args;
@@ -103,7 +103,7 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                     jQuery(function($) {
                         // Trigger when Add to Cart button is clicked
                         
-                        $(document).on('click', '.add_to_cart_button.subscription', function(e) {
+                        $(document).on('click', '.ajax_add_to_cart_subscription', function(e) {
                             e.preventDefault();
                             
                             var $button = $(this);
@@ -132,6 +132,7 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                                     $button.removeClass('loading').addClass('added');
                                     // Trigger WooCommerce notices update
                                     $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $button]);
+                                    $('.wc-block-mini-cart__button').trigger('click');
                                 }
                             });
                         });
@@ -151,14 +152,35 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
             if ( ! empty( $custom_select_value ) ) {
                 $cart_item_data['subscription-schedule'] = $custom_select_value;
             }
-        
+            
+            $cart = WC()->cart; // The WC_Cart Object
+            $valid_cart = true;
+
+            if ( ! $cart->is_empty() ) {
+                // Loop through cart items
+                foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
+                    // If the cart item is not the current defined product ID
+                    
+                    if( isset($cart_item['subscription-schedule']) ) {
+                        wc_add_notice( __( 'You cannot purchase multiple subscriptions at the same time.', 'windros-subscription' ), 'error' );
+                        $valid_cart = false;
+                        wp_send_json_error();
+                    } 
+                    
+                    
+                }
+            }
+            if($valid_cart){
+                
+            }
+
             // Add product to cart
             $new_cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, 0, array(), $cart_item_data );
         
             if ( $new_cart_item_key ) {
                 // Get the updated cart fragments to refresh the cart in the front-end
                 
-                $cart = WC()->cart; // The WC_Cart Object
+                
 
                 // When cart is not empty 
                 if ( ! $cart->is_empty() ) {
