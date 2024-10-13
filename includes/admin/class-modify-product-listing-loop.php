@@ -154,7 +154,7 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
             }
             
             $cart = WC()->cart; // The WC_Cart Object
-            $valid_cart = true;
+            
 
             if ( ! $cart->is_empty() ) {
                 // Loop through cart items
@@ -163,16 +163,13 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                     
                     if( isset($cart_item['subscription-schedule']) ) {
                         wc_add_notice( __( 'You cannot purchase multiple subscriptions at the same time.', 'windros-subscription' ), 'error' );
-                        $valid_cart = false;
                         wp_send_json_error();
                     } 
                     
                     
                 }
             }
-            if($valid_cart){
-                
-            }
+            
 
             // Add product to cart
             $new_cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, 0, array(), $cart_item_data );
@@ -183,16 +180,16 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                 
 
                 // When cart is not empty 
-                if ( ! $cart->is_empty() ) {
-                    // Loop through cart items
-                    foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
-                        // If the cart item is not the current defined product ID
-                        if( $product_id == $cart_item['product_id'] ) {
-                            $cart->set_quantity( $new_cart_item_key, 1 ); // Set the quantity to 1
-                        } 
+                // if ( ! $cart->is_empty() ) {
+                //     // Loop through cart items
+                //     foreach( $cart->get_cart() as $cart_item_key => $cart_item ) {
+                //         // If the cart item is not the current defined product ID
+                //         if( $product_id == $cart_item['product_id'] ) {
+                //             $cart->set_quantity( $new_cart_item_key, 1 ); // Set the quantity to 1
+                //         } 
                         
-                    }
-                }
+                //     }
+                // }
                 $data = array(
                     'fragments' => apply_filters( 'woocommerce_add_to_cart_fragments', array() ),
                     'cart_hash' => WC()->cart->get_cart_hash(),
