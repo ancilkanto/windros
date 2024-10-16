@@ -7,7 +7,8 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
     class Windros_Modify_Product_Listing_Loop {
         public function __construct() {
             // Add custom select field to product listing loop
-            add_action( 'woocommerce_after_shop_loop_item', [$this, 'add_custom_select_to_product_loop'], 10 );
+            // add_action( 'woocommerce_after_shop_loop_item', [$this, 'add_custom_select_to_product_loop'], 10 );
+            add_action( 'woocommerce_after_shop_loop_item', [$this, 'add_short_description_to_product_loop'], 10 );
             add_filter( 'woocommerce_loop_add_to_cart_args', [$this, 'add_ajax_subscription_custom_class'], 10, 2 );
 
             // Add custom script to include select field value in AJAX request
@@ -70,6 +71,23 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
             echo ob_get_clean();
         }
 
+        public function add_short_description_to_product_loop(){
+            global $product;
+
+            $enable_subscription_fields = false;
+            $enable_subscription = get_post_meta( $product->get_id(), '_enable_subscription', true ); // Get the data - Checbox 1
+            if( ! empty( $enable_subscription ) && $enable_subscription == 'yes' ){
+                $enable_subscription_fields = true;
+            }
+            if(!$enable_subscription_fields){
+                return;
+            }
+            
+            if($product->get_short_description() !== null && !empty($product->get_short_description())){
+                echo '<p class="product-short-desc">'.$product->get_short_description().'</p>';
+            }
+        }
+
 
         public function add_ajax_subscription_custom_class( $wp_parse_args, $product ) {
             
@@ -103,41 +121,44 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                     jQuery(function($) {
                         // Trigger when Add to Cart button is clicked
 
-                        
-                        
-                        $(document).on('click', '.ajax_add_to_cart_subscription', function(e) {
-                            e.preventDefault();
-                            
-                            var $button = $(this);
-                            var product_id = $button.data('product_id');
-                            var select_value = parseInt( $button.closest('.product').find('select#subscription-schedule').val());
-
-                            if (!select_value) {
-                                alert('Please select schedule.');
-                                return false; // Prevent adding to cart if no option is selected
-                            }
-
-                            // AJAX call to WooCommerce to add the item to the cart
-                            $.ajax({
-                                type: 'POST',
-                                url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
-                                data: {
-                                    action: 'custom_add_to_cart_subscription',
-                                    product_id: product_id,
-                                    quantity: 1,
-                                    subscription_schedule: select_value // Add custom select value
-                                },
-                                beforeSend: function(response) {
-                                    $button.removeClass('added').addClass('loading');
-                                },
-                                success: function(response) {
-                                    $button.removeClass('loading').addClass('added');
-                                    // Trigger WooCommerce notices update
-                                    $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $button]);
-                                    $('.wc-block-mini-cart__button').trigger('click');
-                                }
-                            });
+                        $('.ajax_add_to_cart_subscription').each(function(){
+                            var productLink = $(this).closest('.product').find('.woocommerce-LoopProduct-link').attr('href');
+                            $(this).attr('href', productLink);
                         });
+                        
+                        // $(document).on('click', '.ajax_add_to_cart_subscription', function(e) {
+                        //     e.preventDefault();
+                            
+                        //     var $button = $(this);
+                        //     var product_id = $button.data('product_id');
+                        //     var select_value = parseInt( $button.closest('.product').find('select#subscription-schedule').val());
+
+                        //     if (!select_value) {
+                        //         alert('Please select schedule.');
+                        //         return false; // Prevent adding to cart if no option is selected
+                        //     }
+
+                        //     // AJAX call to WooCommerce to add the item to the cart
+                        //     $.ajax({
+                        //         type: 'POST',
+                        //         url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
+                        //         data: {
+                        //             action: 'custom_add_to_cart_subscription',
+                        //             product_id: product_id,
+                        //             quantity: 1,
+                        //             subscription_schedule: select_value // Add custom select value
+                        //         },
+                        //         beforeSend: function(response) {
+                        //             $button.removeClass('added').addClass('loading');
+                        //         },
+                        //         success: function(response) {
+                        //             $button.removeClass('loading').addClass('added');
+                        //             // Trigger WooCommerce notices update
+                        //             $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $button]);
+                        //             $('.wc-block-mini-cart__button').trigger('click');
+                        //         }
+                        //     });
+                        // });
                     });
                 </script>
                 <?php

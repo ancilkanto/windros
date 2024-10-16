@@ -31,7 +31,7 @@ if ( ! class_exists( 'Windros_Modify_Product_Loop_Data' ) ) {
         public function windros__WC_add_to_cart_button_text($text, $product) {
             $enable_subscription = get_post_meta( $product->get_id(), '_enable_subscription', true ); // Get the data - Checbox 1
             if( ! empty( $enable_subscription ) && $enable_subscription == 'yes' ){  
-                return __( 'Subscribe', 'windros-subscription' );
+                return __( 'Subscribe Now', 'windros-subscription' );
             }else{
                 return $text;
             }
