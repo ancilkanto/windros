@@ -27,13 +27,48 @@ $windros_subscription_frequencies = array(
 
 
 
-require_once WINDROS_INC.'admin/class-product-subscription-options.php';
-require_once WINDROS_INC.'admin/class-register-shortcodes.php';
-require_once WINDROS_INC.'admin/class-modify-product-loop-data.php';
-require_once WINDROS_INC.'admin/class-modify-product-listing-loop.php';
-require_once WINDROS_INC.'admin/class-modify-product-single-page.php';
-require_once WINDROS_INC.'admin/class-subscription-cart.php';
-require_once WINDROS_INC.'admin/class-subscription-checkout.php';
+// Define the function to run during plugin activation
+function windrose_plugin_activate() {
+    
+
+    // Create a custom database table for subscription
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'windrose_subscription';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    $sql = "CREATE TABLE $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        name tinytext NOT NULL,
+        email text NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+
+    // Example task: Custom capability or role
+    add_role(
+        'custom_role',
+        __('Custom Role'),
+        array(
+            'read'         => true,
+            'edit_posts'   => true,
+            'delete_posts' => false,
+        )
+    );
+}
+
+// Register the activation hook
+// register_activation_hook(__FILE__, 'windrose_plugin_activate');
+
+
+require_once WINDROS_INC.'class-product-subscription-options.php';
+require_once WINDROS_INC.'class-register-shortcodes.php';
+require_once WINDROS_INC.'class-modify-product-loop-data.php';
+require_once WINDROS_INC.'class-modify-product-listing-loop.php';
+require_once WINDROS_INC.'class-modify-product-single-page.php';
+require_once WINDROS_INC.'class-subscription-cart.php';
+require_once WINDROS_INC.'class-subscription-checkout.php';
 
 
 

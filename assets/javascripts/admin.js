@@ -10,7 +10,10 @@
             }
         });
 
-        $(".chosen-wraper select").chosen();
+        setTimeout(function(){
+            $(".chosen-wraper select").chosen();
+        },1000);
+
 
         $('.hide-fields-on-load').css('display', 'none')
         

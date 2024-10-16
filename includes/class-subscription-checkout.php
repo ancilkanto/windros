@@ -20,6 +20,9 @@ if ( ! class_exists( 'Windros_Subscription_Checkout' ) ) {
                 $order->update_meta_data( '_subscription_main_order', 'yes' );
                 $order->update_meta_data( '_subscription_product', $item->get_product()->get_id() );
                 $order->update_meta_data( '_subscription_schedule', $values['subscription-schedule'] );
+
+
+                do_action('windrose_on_subscription_created', $order, $item->get_product()->get_id(), $values['subscription-schedule']);
                 
             }
         }

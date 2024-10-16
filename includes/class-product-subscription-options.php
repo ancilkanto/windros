@@ -66,6 +66,9 @@ if ( ! class_exists( 'Admin_Product_Subscription_Options' ) ) {
                 #woocommerce-product-data ul.wc-tabs li.windros-subscription-settings_options a::before {
                     content: "\f508";
                 } 
+                .chosen-wraper .chosen-container{
+                    min-width: 300px;
+                }
             </style>';
         }
 

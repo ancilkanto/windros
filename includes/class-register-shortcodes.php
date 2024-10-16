@@ -62,7 +62,7 @@ if ( ! class_exists( 'Windros_Register_Shortcodes' ) ) {
             woocommerce_reset_loop();
             wp_reset_postdata();
 
-            return '<div class="row woocommerce columns-' . $atts['columns'] . '">' . ob_get_clean() . '</div>';
+            return '<div class="row woocommerce windrose-subscription-loop columns-' . $atts['columns'] . '">' . ob_get_clean() . '</div>';
         
         
             

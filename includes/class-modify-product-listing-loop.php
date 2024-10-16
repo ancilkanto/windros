@@ -102,6 +102,8 @@ if ( ! class_exists( 'Windros_Modify_Product_Listing_Loop' ) ) {
                 <script type="text/javascript">
                     jQuery(function($) {
                         // Trigger when Add to Cart button is clicked
+
+                        
                         
                         $(document).on('click', '.ajax_add_to_cart_subscription', function(e) {
                             e.preventDefault();
