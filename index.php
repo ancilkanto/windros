@@ -23,43 +23,38 @@ $windros_subscription_frequencies = array(
 ! defined( 'WINDROS_INIT' ) && define( 'WINDROS_INIT', plugin_basename( __FILE__ ) );
 ! defined( 'WINDROS_INC' ) && define( 'WINDROS_INC', WINDROS_DIR . 'includes/' );
 ! defined( 'WINDROS_FREQUENCY' ) && define( 'WINDROS_FREQUENCY', $windros_subscription_frequencies );
+! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscription' );
 
 
 
 
 // Define the function to run during plugin activation
 function windrose_plugin_activate() {
-    
 
     // Create a custom database table for subscription
     global $wpdb;
-    $table_name = $wpdb->prefix . 'windrose_subscription';
     $charset_collate = $wpdb->get_charset_collate();
 
-    $sql = "CREATE TABLE $table_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        name tinytext NOT NULL,
-        email text NOT NULL,
+    $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
+    $create_main_table_query = "CREATE TABLE $subscription_main_table (
+        id bigint(9) NOT NULL AUTO_INCREMENT,
+        order_id text NOT NULL,
+        product_id text NOT NULL,
+        user_id text NOT NULL,
+        schedule mediumint(9) NOT NULL,
+        status text NOT NULL,
+        time_stamp timestamp NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+    dbDelta($create_main_table_query);
 
-    // Example task: Custom capability or role
-    add_role(
-        'custom_role',
-        __('Custom Role'),
-        array(
-            'read'         => true,
-            'edit_posts'   => true,
-            'delete_posts' => false,
-        )
-    );
+    
 }
 
 // Register the activation hook
-// register_activation_hook(__FILE__, 'windrose_plugin_activate');
+register_activation_hook(__FILE__, 'windrose_plugin_activate');
 
 
 require_once WINDROS_INC.'class-product-subscription-options.php';
@@ -69,6 +64,7 @@ require_once WINDROS_INC.'class-modify-product-listing-loop.php';
 require_once WINDROS_INC.'class-modify-product-single-page.php';
 require_once WINDROS_INC.'class-subscription-cart.php';
 require_once WINDROS_INC.'class-subscription-checkout.php';
+require_once WINDROS_INC.'class-create-subscription.php';
 
 
 
