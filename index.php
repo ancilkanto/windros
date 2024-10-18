@@ -24,37 +24,20 @@ $windros_subscription_frequencies = array(
 ! defined( 'WINDROS_INC' ) && define( 'WINDROS_INC', WINDROS_DIR . 'includes/' );
 ! defined( 'WINDROS_FREQUENCY' ) && define( 'WINDROS_FREQUENCY', $windros_subscription_frequencies );
 ! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscription' );
+! defined( 'WINDROS_DROP_TABLES' ) && define( 'WINDROS_DROP_TABLES', true );
 
 
 
 
-// Define the function to run during plugin activation
-function windrose_plugin_activate() {
 
-    // Create a custom database table for subscription
-    global $wpdb;
-    $charset_collate = $wpdb->get_charset_collate();
-
-    $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
-    $create_main_table_query = "CREATE TABLE $subscription_main_table (
-        id bigint(9) NOT NULL AUTO_INCREMENT,
-        order_id text NOT NULL,
-        product_id text NOT NULL,
-        user_id text NOT NULL,
-        schedule mediumint(9) NOT NULL,
-        status text NOT NULL,
-        time_stamp timestamp NOT NULL,
-        PRIMARY KEY  (id)
-    ) $charset_collate;";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($create_main_table_query);
-
-    
-}
 
 // Register the activation hook
 register_activation_hook(__FILE__, 'windrose_plugin_activate');
+require_once WINDROS_DIR.'install-plugin.php';
+
+// Register the deactivation hook
+register_uninstall_hook( __FILE__, 'windrose_plugin_uninstall' );
+require_once WINDROS_DIR.'uninstall-plugin.php';
 
 
 require_once WINDROS_INC.'class-product-subscription-options.php';
