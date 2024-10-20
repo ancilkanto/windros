@@ -28,6 +28,7 @@ function windrose_plugin_activate() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($create_main_table_query);
 
+    flush_rewrite_rules();
     
 }
 

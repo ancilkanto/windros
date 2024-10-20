@@ -18,7 +18,7 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
             // $order_id = $order->get_id();
             $order = wc_get_order($order_id);
             $customer_id = $order->get_user_id(); 
-            $status = 'active';
+            $status = 'processing';
 
             // Get the timezone setting from WordPress
             $timezone = get_option('timezone_string');  // e.g., 'America/New_York'

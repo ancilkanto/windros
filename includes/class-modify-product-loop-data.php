@@ -6,7 +6,7 @@ if ( ! class_exists( 'Windros_Modify_Product_Loop_Data' ) ) {
     class Windros_Modify_Product_Loop_Data {
 
         public function __construct() {
-            add_filter( 'woocommerce_get_price_html', [$this, 'subscription_price_suffix'], 999, 2 );
+            add_filter( 'woocommerce_get_price_html', [$this, 'subscription_price_suffix'], 100, 2 );
 
             add_action( 'woocommerce_product_query', [$this, 'windros_WC_exclude_subscription_products'] );  
 
@@ -46,11 +46,15 @@ if ( ! class_exists( 'Windros_Modify_Product_Loop_Data' ) ) {
             $meta_query = (array) $query->get( 'meta_query' );
 
             $meta_query[] = array(
-                'relation' => 'AND',
+                'relation' => 'OR',
                 array(
                     'key'       => '_enable_subscription',
                     'value'     => 'yes',
                     'compare'   => 'NOT LIKE'
+                ),
+                array(
+                    'key'       => '_enable_subscription',
+                    'compare'   => 'NOT EXISTS'
                 )
             );
 

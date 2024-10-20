@@ -23,6 +23,12 @@ $windros_subscription_frequencies = array(
 ! defined( 'WINDROS_INIT' ) && define( 'WINDROS_INIT', plugin_basename( __FILE__ ) );
 ! defined( 'WINDROS_INC' ) && define( 'WINDROS_INC', WINDROS_DIR . 'includes/' );
 ! defined( 'WINDROS_FREQUENCY' ) && define( 'WINDROS_FREQUENCY', $windros_subscription_frequencies );
+! defined( 'WINDROS_SUBSCRIPTION_STATUS' ) && define( 'WINDROS_SUBSCRIPTION_STATUS', array(
+    'processing' => __('Processing', 'windros-subscription'),
+    'active' => __('Active', 'windros-subscription'),
+    'cancelled' => __('Cancelled', 'windros-subscription'),
+    'expired' => __('Expired', 'windros-subscription')
+));
 ! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscription' );
 ! defined( 'WINDROS_DROP_TABLES' ) && define( 'WINDROS_DROP_TABLES', true );
 
@@ -48,6 +54,10 @@ require_once WINDROS_INC.'class-modify-product-single-page.php';
 require_once WINDROS_INC.'class-subscription-cart.php';
 require_once WINDROS_INC.'class-subscription-checkout.php';
 require_once WINDROS_INC.'class-create-subscription.php';
+require_once WINDROS_INC.'class-subscription-my-account.php';
+
+
+require_once WINDROS_DIR.'templates/my-account-subscriptions.php';
 
 
 

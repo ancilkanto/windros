@@ -1,0 +1,25 @@
+.subsc-prdt-detail{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.sub-prdt-thumb{
+    width: 100px;
+    border: #eaeaea solid 1px;
+}
+.sub-prdt-thumb img{
+    width: 100px;
+    height: auto;
+
+}
+
+.sub-prdt-name{
+    font-size: 20px;
+}
+
+.sub-prdt-details{
+    display: flex;
+    flex-direction: column;    
+    padding-left: 10px;
+}
