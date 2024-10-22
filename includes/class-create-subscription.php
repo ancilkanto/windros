@@ -7,7 +7,7 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
     class Windros_Create_Subscription {
         public function __construct() {
             // Save the custom field value to the order
-            add_action( 'windrose_on_subscription_created', [$this, 'initiate_subscription'], 10, 4 );
+            add_action( 'windrose_subscription_main_order_created', [$this, 'initiate_subscription'], 10, 4 );
 
             // Hook into WooCommerce after the order meta is updated (after the order is created)
             add_action('woocommerce_thankyou', [$this, 'update_subscription_order_data_after_payment'], 10, 1);
@@ -45,7 +45,7 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
                 'schedule' => $subscription_schedule, 
                 'quantity' => $quantity, 
                 'status' => $status, 
-                'time_stamp' => date("Y-m-d H:i:s"), 
+                'time_stamp' => strtotime(date("Y-m-d H:i:s")), 
             ));
             
         }
@@ -76,7 +76,9 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
 
             // Execute the update query
             $updated = $wpdb->update( $subscription_main_table, $data, $where, $format, $where_format );
-
+            
+            // Hook to invoke on 
+            do_action('windrose_subscription_main_order_created_successfully', $order);
         }
     }
 }

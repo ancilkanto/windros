@@ -23,3 +23,127 @@
     flex-direction: column;    
     padding-left: 10px;
 }
+
+.subsc-detail-page{
+    margin-top: 50px;
+}
+.sub-prdt-thumb-full{
+    width: 250px;
+    border: #eaeaea solid 1px;
+}
+.sub-prdt-thumb-full img{
+    width: 250px;
+    height: auto;
+
+}
+
+.subsc-detail-page .subsc-prdt-detail{
+    align-items: flex-start;
+}
+
+.subsc-detail-page .sub-prdt-details{
+    padding-left: 30px;
+}
+.subsc-detail-page .sub-prdt-price-schedule{
+    font-weight: 400;
+}
+
+.subsc-detail-page .subscription-status{
+    padding-top: 30px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+.subsc-detail-page .subscription-status img{
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+
+.subscription-actions{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.subscription-actions a{
+    display: inline-flex;
+    margin-right: 20px;
+}
+
+.upcoming-delivery{
+    margin-top: 30px;
+    background: #eaeaea;
+    padding: 30px;
+}
+
+.upcoming-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.upcoming-inner{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+
+.upcoming-inner .icon-wrapper img{
+    width: 30px;
+    height: auto;
+}
+
+.upcoming-inner .upcoming-details{
+    padding-left: 10px;
+}
+.upcoming-inner .upcoming-details p{
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.past-deliveries{
+    margin-top: 50px;
+}
+ul.past-delivery-list{
+    margin-top: 30px;
+    position: relative;
+    list-style: none;
+    
+}
+
+ul.past-delivery-list::before{
+    content: '';
+    display: inline-block;
+    height: calc(100% - 60px);
+    position: absolute;
+    width: 1px;
+    background: #ccc;
+    left: 13px;
+    top: 15px;
+    z-index: 1;
+}
+
+ul.past-delivery-list li{
+    position: relative;
+    z-index: 5;
+    padding-left: 10px;
+    margin-bottom: 50px;
+}
+
+ul.past-delivery-list li::before{
+    position: absolute;
+    left: -30px;
+    top: 5px;
+    content: '';
+    display: inline-block;
+    background: url(../icons/check_circle.svg) #fff no-repeat;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+
+}
+

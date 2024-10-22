@@ -31,14 +31,14 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 					<table class="woocommerce-orders-table woocommerce-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table">
 						<thead>
 							<tr>
-								<th scope="col" style="width: 50%;" class="woocommerce-orders-table__header woocommerce-orders-table__header-order-number"><span
-										class="nobr">Subscription</span></th>
+								<th scope="col" style="width: 45%;" class="woocommerce-orders-table__header woocommerce-orders-table__header-order-number"><span
+										class="nobr"><?php echo __('Subscription', 'windros-subscription'); ?></span></th>
 								<th scope="col" class="woocommerce-orders-table__header woocommerce-orders-table__header-order-date"><span
-										class="nobr">Upcoming</span></th>
+										class="nobr"><?php echo __('Upcoming', 'windros-subscription'); ?></span></th>
 								<th scope="col" class="woocommerce-orders-table__header woocommerce-orders-table__header-order-status"><span
-										class="nobr">Status</span></th>
+										class="nobr"><?php echo __('Status', 'windros-subscription'); ?></span></th>
 								<th scope="col" class="woocommerce-orders-table__header woocommerce-orders-table__header-order-actions">
-									<span class="nobr">Actions</span></th>
+									<span class="nobr"><?php echo __('Actions', 'windros-subscription'); ?></span></th>
 							</tr>
 						</thead>
 
@@ -89,8 +89,8 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 											<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions"
 												data-title="Actions">
 
-												<a data-href="http://windros/my-account/view-order/296/" href="#" class="woocommerce-button button view"
-													aria-label="View order number 296">View</a>
+												<a href="<?php echo esc_url( wc_get_endpoint_url( 'view-subscription', $subscription_item->id ) ) ?>" class="woocommerce-button button view"
+													aria-label="View subscription number <?php echo esc_attr( $subscription_item->id );?>"><?php echo __('View Details', 'windros-subscription' ); ?></a>
 											</td>
 										</tr>
 									<?php
