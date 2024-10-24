@@ -15,7 +15,8 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
 
 
         public function initiate_subscription( $order_id, $product_id, $subscription_schedule, $quantity ) {
-            // $order_id = $order->get_id();
+            
+            
             $order = wc_get_order($order_id);
             $customer_id = $order->get_user_id(); 
             $status = 'processing';
@@ -45,7 +46,7 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
                 'schedule' => $subscription_schedule, 
                 'quantity' => $quantity, 
                 'status' => $status, 
-                'time_stamp' => strtotime(date("Y-m-d H:i:s")), 
+                'time_stamp' => date("Y-m-d H:i:s"), 
             ));
             
         }
