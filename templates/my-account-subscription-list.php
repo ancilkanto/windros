@@ -21,7 +21,7 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 			$subscription_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
 
 			// Query to get all rows from the custom table
-			$subscription_query = $wpdb->prepare( "SELECT * FROM $subscription_table WHERE user_id = %d", $customer->ID );
+			$subscription_query = $wpdb->prepare( "SELECT * FROM $subscription_table WHERE user_id = %d ORDER BY id DESC", $customer->ID );
 			$subscription_list = $wpdb->get_results( $subscription_query );
 			
 			if ( !empty($subscription_list) ) {

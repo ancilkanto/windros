@@ -28,6 +28,24 @@ function windrose_plugin_activate() {
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($create_main_table_query);
 
+
+    $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+
+    $create_main_table_query = "CREATE TABLE $subscription_order_table (
+        id bigint(9) NOT NULL AUTO_INCREMENT,
+        subscription_id int NOT NULL,
+        main_order_id int NOT NULL,
+        user_id int NOT NULL,
+        product_id int NOT NULL,
+        quantity int NOT NULL,
+        payment_token text NOT NULL,
+        attempts int NOT NULL,
+        status int NOT NULL,
+        time_stamp text NOT NULL,
+        created_at datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP
+        PRIMARY KEY  (id)
+      ) $charset_collate;";
+
     flush_rewrite_rules();
     
 }

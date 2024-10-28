@@ -91,7 +91,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                             </div>
 
                             <div class="past-deliveries">
-                                <h3 class="woocommerce-order-details__title"><?php echo __('Previous Deliveries', 'windros-subscription'); ?></h3>
+                                <h3 class="woocommerce-order-details__title"><?php echo __('Previous Orders', 'windros-subscription'); ?></h3>
                                 <ul class="past-delivery-list">
                                     <li>
                                         <h5 class="woocommerce-order-details__title">3rd Delivery</h5>
