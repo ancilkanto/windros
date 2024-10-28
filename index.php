@@ -57,6 +57,7 @@ require_once WINDROS_INC.'class-subscription-checkout.php';
 require_once WINDROS_INC.'class-create-subscription.php';
 require_once WINDROS_INC.'class-subscription-my-account.php';
 require_once WINDROS_INC.'class-activate-subscription.php';
+require_once WINDROS_INC.'class-create-subscription-order.php';
 
 
 require_once WINDROS_DIR.'templates/my-account-subscription-list.php';

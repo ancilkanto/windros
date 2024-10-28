@@ -12,17 +12,17 @@ function windrose_plugin_uninstall() {
 
     if(WINDROS_DROP_TABLES){
         // Define table names (replace with your actual custom table names)
-        $subscription_main_table = $wpdb->prefix . 'windrose_subscription';
+        $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
+        $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
         // $table_name_2 = $wpdb->prefix . 'custom_table_2';
 
-        // Prepare the SQL queries to drop the tables
-        // $sql = "DROP TABLE IF EXISTS {$table_name_1}, {$table_name_2};";
-        $sql = "DROP TABLE IF EXISTS {$subscription_main_table};";
+        // Prepare the SQL queries to drop the tables        
+        $sql = "DROP TABLE IF EXISTS {$subscription_main_table}, {$subscription_order_table};";
 
         // Execute the queries
         $wpdb->query( $sql );
 
-        error_log( 'Table '.$subscription_main_table. ' Removed' );
+        
 
     }
 

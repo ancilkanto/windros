@@ -21,6 +21,7 @@ function windrose_plugin_activate() {
         schedule mediumint(9) NOT NULL,
         quantity mediumint(9) NOT NULL,
         status text NOT NULL,
+        total_orders int NOT NULL,
         time_stamp timestamp NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
@@ -40,8 +41,9 @@ function windrose_plugin_activate() {
         quantity int NOT NULL,
         payment_token text NOT NULL,
         attempts int NOT NULL,
-        status int NOT NULL,
-        time_stamp text NOT NULL,
+        status text NOT NULL,
+        sequence int NOT NULL,
+        time_stamp bigint(20) NOT NULL,
         created_at datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP
         PRIMARY KEY  (id)
       ) $charset_collate;";

@@ -17,7 +17,7 @@ if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
         }
 
         public function activate_subscription($order) {
-            error_log( 'Activating Subscription' );
+            
             // Get the order object
             // $order = wc_get_order($order_id);
             $order_id = $order->get_id();
@@ -42,7 +42,7 @@ if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
 			$subscription_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
 
 			// Query to get all rows from the custom table
-			$subscription_query = $wpdb->prepare( "SELECT id FROM $subscription_table WHERE order_id = %d", $order_id );
+			$subscription_query = $wpdb->prepare( "SELECT id FROM $subscription_table WHERE order_id = %d AND status = %s", $order_id, 'processing' );
 			$subscription_list = $wpdb->get_results( $subscription_query );
 
             $subscription_ids = array();
@@ -50,7 +50,7 @@ if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
                 $subscription_ids[] = $subscription_item->id;
             }
 
-            error_log( 'Subscription List: ' . json_encode($subscription_ids) );
+            
 			
 			if ( !empty($subscription_ids) ) {
                 
@@ -93,18 +93,3 @@ if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
 }
 
 new Windros_Activate_Subscription();
-
-
-// function handle_custom_order_action($order) {
-//     // Get order ID
-//     $order_id = $order->get_id();
-
-//     // Add a custom order note (or other custom actions)
-//     $order->add_order_note('Custom email sent to customer.', true);
-
-//     // Example: Send an email to the customer
-//     $to = $order->get_billing_email();
-//     $subject = 'Important Update on Your Order';
-//     $message = 'Hello, we wanted to let you know about an update regarding your order #' . $order_id;
-//     wp_mail($to, $subject, $message);
-// }

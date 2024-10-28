@@ -46,6 +46,7 @@ if ( ! class_exists( 'Windros_Create_Subscription' ) ) {
                 'schedule' => $subscription_schedule, 
                 'quantity' => $quantity, 
                 'status' => $status, 
+                'total_orders' => 0, 
                 'active_date' => '', 
                 'time_stamp' => date("Y-m-d H:i:s"), 
             ));
