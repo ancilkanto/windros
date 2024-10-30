@@ -22,6 +22,7 @@ function windrose_plugin_activate() {
         quantity mediumint(9) NOT NULL,
         status text NOT NULL,
         total_orders int NOT NULL,
+        active_date text NULL,
         time_stamp timestamp NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";

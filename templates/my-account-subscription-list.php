@@ -70,7 +70,7 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 									if($upcoming_order_data){										
 										$timestamp = $upcoming_order_data->time_stamp;
 										$date = date('F d, Y', $timestamp);
-										$raw_date = date('Y-m-d H:i:s', $timestamp);
+										$raw_date = $upcoming_order_data->created_at;
 									}
 
 									?>
