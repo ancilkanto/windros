@@ -50,7 +50,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                     );
 
                     
-                    $past_orders_query = $wpdb->prepare( "SELECT * FROM $subscription_order_table WHERE subscription_id = %d AND status != 'upcoming' ORDER BY id DESC", $subscription_id );
+                    $past_orders_query = $wpdb->prepare( "SELECT * FROM $subscription_order_table WHERE subscription_id = %d AND status != 'upcoming' ORDER BY sequence DESC", $subscription_id );
 			        $past_orders = $wpdb->get_results( $past_orders_query );
 
 
@@ -74,14 +74,47 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                 </div>
                             </div>
                             <div class="subscription-actions">
-                                <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button edit-subscription"
-                                aria-label="Edit subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Edit Subscription', 'windros-subscription' ); ?></a>
+                                <?php 
+                                    if($subscription['status'] == 'active' || $subscription['status'] == 'processing') {
+                                        ?>
+                                            <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button edit-subscription"
+                                            aria-label="Edit subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Edit Subscription', 'windros-subscription' ); ?></a>
+                                        <?php 
+                                    }
                                 
-                                <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button pause-subscription"
-                                aria-label="Pause subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Pause Subscription', 'windros-subscription' ); ?></a>
+                                    if($subscription['status'] == 'active') {
+                                        ?>
+                                        <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button pause-subscription"
+                                        aria-label="Pause subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Pause Subscription', 'windros-subscription' ); ?></a>
                                 
-                                <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button cancel-subscription"
-                                aria-label="Cancel subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Cancel Subscription', 'windros-subscription' ); ?></a>
+                                        <?php 
+                                    }
+
+                                    if($subscription['status'] == 'paused') {
+                                        ?>
+                                            <?php wp_nonce_field('reactivate_subscription_action', 'reactivate_subscription_nonce'); ?>
+                                            <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button reactivate-subscription"
+                                            aria-label="Re-activate subscription <?php echo esc_attr( $subscription['id'] );?>" data-subscription-id="<?php echo esc_attr( $subscription['id'] );?>">
+                                                <?php _e('Re-activate Subscription', 'windros-subscription' ); ?>
+                                            </a>
+                                        
+                                        <?php
+                                    }
+                                 
+                                    if($subscription['status'] == 'active' || $subscription['status'] == 'processing' || $subscription['status'] == 'paused') {
+                                        ?>
+                                            <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button cancel-subscription"
+                                            aria-label="Cancel subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Cancel Subscription', 'windros-subscription' ); ?></a>
+                                        <?php
+                                    }
+
+                                    if($subscription['status'] == 'cancel' || $subscription['status'] == 'expired') {
+                                        ?>
+                                            <a href="<?php echo esc_url( get_permalink( $subscription['product_id'] ) ) ;?>" class="woocommerce-button"
+                                            aria-label="Continue subscription of <?php echo esc_attr( get_the_title( $subscription['product_id'] ) );?>"><?php _e('Continue Subscription', 'windros-subscription' ); ?></a>
+                                        <?php
+                                    }
+                                ?>
                             </div>
                             <div class="update-subscription-wrapper windrose-foredrop">
                                 <?php
@@ -114,6 +147,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                     $cancel_subscription_template->cancel_subscription((object) $subscription_data);
                                 ?>
                             </div>
+                            
                             <div class="windrose-backdrop"></div>
                             <?php 
                                 if(!empty($upcoming_order_data)){
@@ -122,6 +156,15 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                     $date = date('F d, Y', $timestamp);
                                     
                             ?>
+                                    <div class="skip-subscription-wrapper windrose-foredrop">
+                                        <?php
+                                            $subscription_data = array(
+                                                'id' => $subscription['id'],                                        
+                                            );
+                                            $skip_subscription_template = new Windrose_skip_Subscription_Template();
+                                            $skip_subscription_template->skip_subscription((object) $subscription_data);
+                                        ?>
+                                    </div>
                                     <div class="upcoming-delivery">
                                         <h3 class="woocommerce-order-details__title"><?php echo __('Upcoming Order', 'windros-subscription'); ?></h3>
                                         <div class="upcoming-wrapper">
@@ -135,7 +178,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                                 </div>
                                             </div>
                                             <div class="upcomming-actions">
-                                                <a href="#" class="woocommerce-button skip-delivery"
+                                                <a href="#skip-subscription-order" class="woocommerce-button skip-delivery"
                                                 aria-label="Skip subscription delivery"><?php _e('Skip Delivery', 'windros-subscription' ); ?></a>
                                             </div>
                                         </div>

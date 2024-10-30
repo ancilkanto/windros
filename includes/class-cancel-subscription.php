@@ -3,16 +3,16 @@ defined( 'WINDROS_INIT' ) || exit;
 
 
 
-if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
-    class Windros_Pause_Subscription {
+if ( ! class_exists( 'Windros_Cancel_Subscription' ) ) {
+    class Windros_Cancel_Subscription {
         public function __construct() {
-            add_action( 'wp_ajax_windrose_pause_subscription', [$this, 'pause_subscription'] );
-            add_action( 'wp_ajax_nopriv_windrose_pause_subscription', [$this, 'pause_subscription'] );
+            add_action( 'wp_ajax_windrose_cancel_subscription', [$this, 'cancel_subscription'] );
+            add_action( 'wp_ajax_nopriv_windrose_cancel_subscription', [$this, 'cancel_subscription'] );
         }
 
-        public function pause_subscription() {
+        public function cancel_subscription() {
             // Verify the nonce for security
-            if (!isset($_POST['pause_subscription_nonce']) || !wp_verify_nonce($_POST['pause_subscription_nonce'], 'pause_subscription_action')) {
+            if (!isset($_POST['cancel_subscription_nonce']) || !wp_verify_nonce($_POST['cancel_subscription_nonce'], 'cancel_subscription_action')) {
                 wp_send_json_error(__('Invalid submission.', 'windros-subscription'));
                 wp_die();
             }
@@ -38,7 +38,7 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
 
             if ( $subscription ) {
                 $data = array(
-                    'status' => 'paused'
+                    'status' => 'cancel'
                 );
     
                 $condition = array(
@@ -57,32 +57,32 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
                         $wpdb->prepare( "SELECT id FROM $subscription_order_table WHERE subscription_id = %d AND status = 'upcoming'", $subscription_id )
                     );
 
-                    $order_pause_data = array(
+                    $order_cancel_data = array(
                         'status' => 'cancelled'
                     );
 
-                    $order_pause_condition = array(
+                    $order_cancel_condition = array(
                         'id' => $upcoming_order_data->id
                     );
 
-                    $order_pause_format = array('%s');
-                    $order_pause_where_format = array('%d');
+                    $order_cancel_format = array('%s');
+                    $order_cancel_where_format = array('%d');
 
-                    $order_updated = $wpdb->update( $subscription_order_table, $order_pause_data, $order_pause_condition, $order_pause_format, $order_pause_where_format );
+                    $order_updated = $wpdb->update( $subscription_order_table, $order_cancel_data, $order_cancel_condition, $order_cancel_format, $order_cancel_where_format );
 
                     do_action('windrose_subscription_order_cancelled', $upcoming_order_data->id);
-                    do_action('windrose_subscription_order_cancelled_on_pause', $upcoming_order_data->id);
+                    do_action('windrose_subscription_order_cancelled_on_cancel', $upcoming_order_data->id);
 
-                    wc_add_notice( __('The subscription has been paused!', 'windros-subscription'), 'success');
+                    wc_add_notice( __('The subscription has been cancelled!', 'windros-subscription'), 'success');
                     
                     $response['status'] = 'success';
-                    $response['message'] = __('The subscription has been paused!', 'windros-subscription');
+                    $response['message'] = __('The subscription has been cancelled!', 'windros-subscription');
                     
-                    do_action('windrose_subscription_main_order_paused', $subscription_id);
+                    do_action('windrose_subscription_main_order_cancelled', $subscription_id);
                 }else{
                     $response['status'] = 'error';
-                    $response['message'] = __('Subscription Not Paused!', 'windros-subscription');
-                    wc_add_notice( __('Subscription Not Paused!', 'windros-subscription'), 'error');
+                    $response['message'] = __('Subscription Not Canceld!', 'windros-subscription');
+                    wc_add_notice( __('Subscription Not Canceld!', 'windros-subscription'), 'error');
                 }
             }else{
                 $response['status'] = 'error';
@@ -98,4 +98,4 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
     }
 }
 
-new Windros_Pause_Subscription();
+new Windros_Cancel_Subscription();

@@ -163,6 +163,10 @@ ul.past-delivery-list li sup{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+ul.past-delivery-list li.prev-order-status-cancelled sup{
+    background: #cf1e1e;
+}
+
 .windrose-foredrop{
     opacity: 0;
     visibility: hidden;
@@ -181,7 +185,7 @@ ul.past-delivery-list li sup{
     transition: all 0.4s ease-in-out;
 }
 
-.pause-subscription-wrapper, .cancel-subscription-wrapper{
+.pause-subscription-wrapper, .cancel-subscription-wrapper, .skip-subscription-wrapper{
     height: 300px;
     min-height: 300px;
 }
@@ -249,4 +253,9 @@ ul.past-delivery-list li sup{
 .windrose-checkbox{
     margin-right: 12px;
     margin-top: 7px;
+}
+
+.windrose-foredrop.loading *{
+    pointer-events: none;
+    opacity: 0.5;
 }

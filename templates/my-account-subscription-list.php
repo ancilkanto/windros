@@ -60,6 +60,19 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 									$subscription_price = $product->get_price() * $subscription_qty;
 									$formatted_price = wc_price( $subscription_price );
 									$product_price_html = $formatted_price . '&nbsp;' . __('for', 'windros-subscription') . '&nbsp;' . WINDROS_FREQUENCY[$subscription_item->schedule];
+									
+									$subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+									$upcoming_order_data = $wpdb->get_row( 
+										$wpdb->prepare( "SELECT time_stamp FROM $subscription_order_table WHERE subscription_id = %d AND status = 'upcoming'", $subscription_item->id )
+									);
+									$date = '--';
+									$raw_date = '--';
+									if($upcoming_order_data){										
+										$timestamp = $upcoming_order_data->time_stamp;
+										$date = date('F d, Y', $timestamp);
+										$raw_date = date('Y-m-d H:i:s', $timestamp);
+									}
+
 									?>
 										<tr class="woocommerce-orders-table__row woocommerce-orders-table__row--status-processing order">
 											<th class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-number" data-title="Order"
@@ -77,7 +90,7 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 											</th>
 											<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-date" data-title="Date">
 
-												<time datetime="2024-10-18T07:41:33+00:00">October 18, 2024</time>
+												<time datetime="<?php echo esc_attr($raw_date); ?>"><?php echo esc_html($date); ?></time>
 												
 											</td>
 											<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-status" data-title="Status">

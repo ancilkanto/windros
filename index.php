@@ -27,14 +27,14 @@ $windros_subscription_frequencies = array(
     'processing' => __('Processing', 'windros-subscription'),
     'active' => __('Active', 'windros-subscription'),
     'paused' => __('Paused', 'windros-subscription'),
-    'canceled' => __('Canceled', 'windros-subscription'),
+    'cancel' => __('Cancelled', 'windros-subscription'),
     'expired' => __('Expired', 'windros-subscription')
 ));
 ! defined( 'WINDROS_SUBSCRIPTION_ORDER_STATUS' ) && define( 'WINDROS_SUBSCRIPTION_ORDER_STATUS', array(
     'upcoming' => __('Upcoming', 'windros-subscription'),
     'past' => __('Past', 'windros-subscription'),
     'skipped' => __('Skipped', 'windros-subscription'),
-    'canceled' => __('Canceled', 'windros-subscription')
+    'cancelled' => __('Cancelled', 'windros-subscription')
 ));
 ! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscriptions' );
 ! defined( 'WINDROS_SUBSCRIPTION_ORDER_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_ORDER_TABLE', 'windrose_subscription_orders' );
@@ -66,6 +66,10 @@ require_once WINDROS_INC.'class-subscription-my-account.php';
 require_once WINDROS_INC.'class-activate-subscription.php';
 require_once WINDROS_INC.'class-create-subscription-order.php';
 require_once WINDROS_INC.'class-update-subscription.php';
+require_once WINDROS_INC.'class-pause-subscription.php';
+require_once WINDROS_INC.'class-cancel-subscription.php';
+require_once WINDROS_INC.'class-skip-subscription.php';
+require_once WINDROS_INC.'class-reactivate-subscription.php';
 
 
 require_once WINDROS_DIR.'templates/my-account-subscription-list.php';
@@ -73,6 +77,7 @@ require_once WINDROS_DIR.'templates/my-account-subscription-details.php';
 require_once WINDROS_DIR.'templates/my-account-update-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-pause-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-cancel-subscription.php';
+require_once WINDROS_DIR.'templates/my-account-skip-subscription.php';
 
 
 
