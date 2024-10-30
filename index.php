@@ -26,8 +26,15 @@ $windros_subscription_frequencies = array(
 ! defined( 'WINDROS_SUBSCRIPTION_STATUS' ) && define( 'WINDROS_SUBSCRIPTION_STATUS', array(
     'processing' => __('Processing', 'windros-subscription'),
     'active' => __('Active', 'windros-subscription'),
-    'cancelled' => __('Cancelled', 'windros-subscription'),
+    'paused' => __('Paused', 'windros-subscription'),
+    'canceled' => __('Canceled', 'windros-subscription'),
     'expired' => __('Expired', 'windros-subscription')
+));
+! defined( 'WINDROS_SUBSCRIPTION_ORDER_STATUS' ) && define( 'WINDROS_SUBSCRIPTION_ORDER_STATUS', array(
+    'upcoming' => __('Upcoming', 'windros-subscription'),
+    'past' => __('Past', 'windros-subscription'),
+    'skipped' => __('Skipped', 'windros-subscription'),
+    'canceled' => __('Canceled', 'windros-subscription')
 ));
 ! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscriptions' );
 ! defined( 'WINDROS_SUBSCRIPTION_ORDER_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_ORDER_TABLE', 'windrose_subscription_orders' );
@@ -58,10 +65,14 @@ require_once WINDROS_INC.'class-create-subscription.php';
 require_once WINDROS_INC.'class-subscription-my-account.php';
 require_once WINDROS_INC.'class-activate-subscription.php';
 require_once WINDROS_INC.'class-create-subscription-order.php';
+require_once WINDROS_INC.'class-update-subscription.php';
 
 
 require_once WINDROS_DIR.'templates/my-account-subscription-list.php';
 require_once WINDROS_DIR.'templates/my-account-subscription-details.php';
+require_once WINDROS_DIR.'templates/my-account-update-subscription.php';
+require_once WINDROS_DIR.'templates/my-account-pause-subscription.php';
+require_once WINDROS_DIR.'templates/my-account-cancel-subscription.php';
 
 
 
@@ -88,3 +99,14 @@ function show_custom_label_in_product_column($column, $post_id) {
     }
 }
 
+
+function windrose_get_day_with_suffix($day) {
+    if (!in_array(($day % 100), array(11, 12, 13))) {
+        switch ($day % 10) {
+            case 1: return $day . __('st', 'windros-subscription');
+            case 2: return $day . __('nd', 'windros-subscription');
+            case 3: return $day . __('rd', 'windros-subscription');
+        }
+    }
+    return $day . __('th', 'windros-subscription');
+}

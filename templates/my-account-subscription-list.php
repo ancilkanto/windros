@@ -71,6 +71,7 @@ if ( ! class_exists( 'Windrose_Subscription_List_Template' ) ) {
 													<div class="sub-prdt-details">
 														<h3 class="sub-prdt-name"><?php echo esc_html($product_title); ?></h3>
 														<h6 class="sub-prdt-price-schedule"><?php echo $product_price_html; ?></h6>
+														<p><?php echo __('Quantity: ', 'windros-subscription') . $subscription_qty; ?></p>
 													</div>
 												</div>												
 											</th>

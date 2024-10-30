@@ -11,7 +11,8 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
             
 
 			wp_enqueue_style('windrose-myaccount', WINDROS_URL .'assets/stylesheets/my-account.css'); 
-
+            wp_enqueue_script('windrose-my-account', WINDROS_URL .'assets/javascripts/my-account.js', array('jquery'), '1.0', true); 
+            
 			$customer = wp_get_current_user();
 
 			global $wpdb;
@@ -42,6 +43,17 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                     $formatted_price = wc_price( $subscription_price );
                     $product_price_html = $formatted_price . '&nbsp;' . __('for', 'windros-subscription') . '&nbsp;' . WINDROS_FREQUENCY[$subscription['schedule']];
 
+                    $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+                    $upcoming_order_data = $wpdb->get_row( 
+                        $wpdb->prepare( "SELECT * FROM $subscription_order_table WHERE subscription_id = %d AND status = 'upcoming'", $subscription_id ), 
+                        ARRAY_A // Return the result as an associative array
+                    );
+
+                    
+                    $past_orders_query = $wpdb->prepare( "SELECT * FROM $subscription_order_table WHERE subscription_id = %d AND status != 'upcoming' ORDER BY id DESC", $subscription_id );
+			        $past_orders = $wpdb->get_results( $past_orders_query );
+
+
                     ob_start();
                     ?>
                         <div class="subsc-detail-page">
@@ -52,6 +64,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                 <div class="sub-prdt-details">
                                     <h3 class="woocommerce-order-details__title"><?php echo esc_html($product_title); ?></h3>
                                     <h5 class="sub-prdt-price-schedule"><?php echo $product_price_html; ?></h5>
+                                    <p><?php echo __('Quantity: ', 'windros-subscription') . $subscription_qty; ?></p>
                                     <p class="subscription-status <?php echo esc_attr($subscription['status']); ?>">
                                         <img src="<?php echo WINDROS_URL.'/assets/icons/'. esc_attr($subscription['status']) .'.svg'; ?>" alt="<?php echo esc_attr($subscription['status']); ?>">
                                         <?php
@@ -61,52 +74,108 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                 </div>
                             </div>
                             <div class="subscription-actions">
-                                <a href="#<?php echo esc_url( $subscription['id'] ); ?>" class="woocommerce-button edit-subscription"
+                                <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button edit-subscription"
                                 aria-label="Edit subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Edit Subscription', 'windros-subscription' ); ?></a>
                                 
-                                <a href="#<?php echo esc_url( $subscription['id'] ); ?>" class="woocommerce-button pause-subscription"
+                                <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button pause-subscription"
                                 aria-label="Pause subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Pause Subscription', 'windros-subscription' ); ?></a>
                                 
-                                <a href="#<?php echo esc_url( $subscription['id'] ); ?>" class="woocommerce-button cancel-subscription"
+                                <a href="#<?php echo esc_attr( $subscription['id'] ); ?>" class="woocommerce-button cancel-subscription"
                                 aria-label="Cancel subscription <?php echo esc_attr( $subscription['id'] );?>"><?php _e('Cancel Subscription', 'windros-subscription' ); ?></a>
                             </div>
-
-                            <div class="upcoming-delivery">
-                                <h3 class="woocommerce-order-details__title"><?php echo __('Upcoming', 'windros-subscription'); ?></h3>
-                                <div class="upcoming-wrapper">
-                                    <div class="upcoming-inner">
-                                        <div class="icon-wrapper">
-                                            <img src="<?php echo WINDROS_URL.'/assets/icons/calendar_month.svg'; ?>" alt="Calendar">
-                                        </div>
-                                        <div class="upcoming-details">
-                                            <h5 class="woocommerce-order-details__title">4th Delivery</h5>
-                                            <p class="delivery-date">October 18, 2024</p>
+                            <div class="update-subscription-wrapper windrose-foredrop">
+                                <?php
+                                    $subscription_data = array(
+                                        'id' => $subscription['id'],
+                                        'quantity' => $subscription['quantity'],
+                                        'schedule' => $subscription['schedule'],
+                                        'product_name' => $product_title,
+                                        'product_id' => $product->get_id(),
+                                    );
+                                    $update_subscription_template = new Windrose_Update_Subscription_Template();
+                                    $update_subscription_template->update_subscription((object) $subscription_data);
+                                ?>
+                            </div>
+                            <div class="pause-subscription-wrapper windrose-foredrop">
+                                <?php
+                                    $subscription_data = array(
+                                        'id' => $subscription['id'],                                        
+                                    );
+                                    $pause_subscription_template = new Windrose_Pause_Subscription_Template();
+                                    $pause_subscription_template->pause_subscription((object) $subscription_data);
+                                ?>
+                            </div>
+                            <div class="cancel-subscription-wrapper windrose-foredrop">
+                                <?php
+                                    $subscription_data = array(
+                                        'id' => $subscription['id'],                                        
+                                    );
+                                    $cancel_subscription_template = new Windrose_Cancel_Subscription_Template();
+                                    $cancel_subscription_template->cancel_subscription((object) $subscription_data);
+                                ?>
+                            </div>
+                            <div class="windrose-backdrop"></div>
+                            <?php 
+                                if(!empty($upcoming_order_data)){
+                                    $sequence = windrose_get_day_with_suffix($upcoming_order_data['sequence']);
+                                    $timestamp = $upcoming_order_data['time_stamp'];
+                                    $date = date('F d, Y', $timestamp);
+                                    
+                            ?>
+                                    <div class="upcoming-delivery">
+                                        <h3 class="woocommerce-order-details__title"><?php echo __('Upcoming Order', 'windros-subscription'); ?></h3>
+                                        <div class="upcoming-wrapper">
+                                            <div class="upcoming-inner">
+                                                <div class="icon-wrapper">
+                                                    <img src="<?php echo WINDROS_URL.'/assets/icons/calendar_month.svg'; ?>" alt="Calendar">
+                                                </div>
+                                                <div class="upcoming-details">
+                                                    <h5 class="woocommerce-order-details__title"><?php echo esc_html($sequence) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?></h5>
+                                                    <p class="delivery-date"><?php echo esc_html($date); ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="upcomming-actions">
+                                                <a href="#" class="woocommerce-button skip-delivery"
+                                                aria-label="Skip subscription delivery"><?php _e('Skip Delivery', 'windros-subscription' ); ?></a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="upcomming-actions">
-                                        <a href="#" class="woocommerce-button skip-delivery"
-                                        aria-label="Skip subscription delivery"><?php _e('Skip Delivery', 'windros-subscription' ); ?></a>
+                            <?php
+                                }
+                            ?>
+                            <?php 
+                                if(!empty($past_orders)){                                                                        
+                                    
+                            ?>
+                                    <div class="past-deliveries">
+                                        <h3 class="woocommerce-order-details__title"><?php echo __('Previous Orders', 'windros-subscription'); ?></h3>
+                                        <ul class="past-delivery-list">
+                                            <?php 
+                                                foreach($past_orders as $past_order){
+                                                    $past_sequence = windrose_get_day_with_suffix($past_order->sequence);
+                                                    $past_timestamp = $past_order->time_stamp;
+                                                    $past_date = date('F d, Y', $past_timestamp);
+                                                    ?>
+                                                    <li class="prev-order-status-<?php echo esc_attr($past_order->status); ?>">
+                                                        <h5 class="woocommerce-order-details__title">
+                                                            <?php echo esc_html($past_sequence) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?>
+                                                            <?php 
+                                                                if($past_order->status != 'past'){
+                                                                    echo '<sup>' . esc_html(WINDROS_SUBSCRIPTION_ORDER_STATUS[$past_order->status]) . '</sup>';
+                                                                }
+                                                            ?>
+                                                            
+                                                        </h5>
+                                                        <p class="delivery-date"><?php echo esc_html($past_date); ?></p>
+                                                    </li>
+                                                    <?php
+                                                }
+                                            ?>                                                                                        
+                                        </ul>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="past-deliveries">
-                                <h3 class="woocommerce-order-details__title"><?php echo __('Previous Orders', 'windros-subscription'); ?></h3>
-                                <ul class="past-delivery-list">
-                                    <li>
-                                        <h5 class="woocommerce-order-details__title">3rd Delivery</h5>
-                                        <p class="delivery-date">October 18, 2024</p>
-                                    </li>
-                                    <li>
-                                        <h5 class="woocommerce-order-details__title">2nd Delivery</h5>
-                                        <p class="delivery-date">October 18, 2024</p>
-                                    </li>
-                                    <li>
-                                        <h5 class="woocommerce-order-details__title">1st Delivery</h5>
-                                        <p class="delivery-date">October 18, 2024</p>
-                                    </li>
-                                </ul>
-                            </div>
+                            <?php
+                                }
+                            ?>
                         </div>
                     <?php
 

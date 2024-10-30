@@ -47,7 +47,8 @@ if ( ! class_exists( 'Windrose_My_Account_Init' ) ) {
             // Get the item ID from the URL (replace with your custom query)
             $subscription_id = get_query_var( 'view-subscription' );
 
-            // echo '<h3>' . __( 'Subscription Detail', 'windros-subscription' ) . ' #' . esc_html($subscription_id) . '</h3>';
+            
+
             $subscription_template = new Windrose_Subscription_Details_Template();
             $subscription_template->subscription_details($subscription_id);
             

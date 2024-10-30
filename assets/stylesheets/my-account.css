@@ -147,3 +147,106 @@ ul.past-delivery-list li::before{
 
 }
 
+ul.past-delivery-list li.prev-order-status-cancelled::before{
+    background: url(../icons/cancelled.svg) #fff no-repeat;
+}
+ul.past-delivery-list li.prev-order-status-skipped::before{
+    background: url(../icons/skipped.svg) #fff no-repeat;
+}
+
+ul.past-delivery-list li sup{
+    text-transform: uppercase;
+    background: #83c4c4;
+    padding: 5px 5px 3px 5px;
+    font-size: 12px;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.windrose-foredrop{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    z-index: 1001;
+    width: 40%;
+    height: 50vh;
+    min-height: 450px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #FFF;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s ease-in-out;
+}
+
+.pause-subscription-wrapper, .cancel-subscription-wrapper{
+    height: 300px;
+    min-height: 300px;
+}
+.windrose-backdrop{
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    transition: all 0.4s ease-in-out;
+}
+.visible{
+    opacity: 1;
+    visibility: visible;
+}
+
+.windrose-frontdrop-content-block{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 30px;
+    height: 100%;
+}
+
+.update-subscription-form{
+    width: 100%;
+}
+.field-form-wrap{
+    
+}
+.field-wrap{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+
+.field-label{
+    width: 150px;
+}
+
+.foredrop-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-top: #ccc solid 1px;
+    padding-top: 30px;
+}
+
+.foredrop-footer .button{
+    display: inline-block;
+    margin: 0px 10px !important;
+}
+.windrose-checkbox-field-wrap{
+    display: flex;
+    align-items: flex-start;
+}
+.windrose-checkbox, .windrose-label{
+    display: inline-block;
+    cursor: pointer;
+}
+.windrose-checkbox{
+    margin-right: 12px;
+    margin-top: 7px;
+}
