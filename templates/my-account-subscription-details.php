@@ -65,6 +65,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                     <h3 class="woocommerce-order-details__title"><?php echo esc_html($product_title); ?></h3>
                                     <h5 class="sub-prdt-price-schedule"><?php echo $product_price_html; ?></h5>
                                     <p><?php echo __('Quantity: ', 'windros-subscription') . $subscription_qty; ?></p>
+                                    <p><?php echo __('Subscription ID:', 'windros-subscription') . '&nbsp;#' . $subscription_id; ?></p>
                                     <p class="subscription-status <?php echo esc_attr($subscription['status']); ?>">
                                         <img src="<?php echo WINDROS_URL.'/assets/icons/'. esc_attr($subscription['status']) .'.svg'; ?>" alt="<?php echo esc_attr($subscription['status']); ?>">
                                         <?php

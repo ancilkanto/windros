@@ -70,14 +70,19 @@ require_once WINDROS_INC.'class-pause-subscription.php';
 require_once WINDROS_INC.'class-cancel-subscription.php';
 require_once WINDROS_INC.'class-skip-subscription.php';
 require_once WINDROS_INC.'class-reactivate-subscription.php';
+require_once WINDROS_INC.'class-admin-subscription-list.php';
 
 
+// Load templates
 require_once WINDROS_DIR.'templates/my-account-subscription-list.php';
 require_once WINDROS_DIR.'templates/my-account-subscription-details.php';
 require_once WINDROS_DIR.'templates/my-account-update-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-pause-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-cancel-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-skip-subscription.php';
+
+// Load admin tempplates
+require_once WINDROS_DIR.'templates/admin-subscription-list.php';
 
 
 
@@ -114,4 +119,61 @@ function windrose_get_day_with_suffix($day) {
         }
     }
     return $day . __('th', 'windros-subscription');
+}
+
+function windrose_get_subscrption_products() {
+    $subscription_products = array();
+    $products = new WP_Query( array (
+        'post_type'         => 'product',
+        'post_status'       => 'publish',
+        'posts_per_page'    => '-1',
+        'meta_query'        => array(
+            'relation'  => 'AND',
+            array(
+                'key'       => '_enable_subscription',
+                'value'     => 'yes',
+                'compare'   => '='
+            )
+        )
+    ));
+
+    if ( $products->have_posts() ) {
+        while ( $products->have_posts() ) : $products->the_post(); 
+            $subscription_products[] = (object) array(
+                'id' => get_the_ID(),
+                'title' => get_the_title(),
+            );
+        endwhile;
+    }
+
+    return (object) $subscription_products;
+}
+
+function windrose_get_customers() {
+    // Define the query to get all users with the customer role
+    $args = [
+        'role'    => 'customer',
+        'orderby' => 'ID',
+        'order'   => 'ASC',
+        'fields'  => 'all', // Get full user data
+    ];
+
+    $user_query = new WP_User_Query($args);
+    $customers = [];
+
+    if (!empty($user_query->get_results())) {
+        foreach ($user_query->get_results() as $user) {
+            $user_id = $user->ID;
+            $billing_first_name = get_user_meta($user_id, 'billing_first_name', true);
+            $billing_last_name = get_user_meta($user_id, 'billing_last_name', true);
+
+            // Add customer data to the array
+            $customers[] = (object) array(
+                'user_id'           => $user_id,
+                'customer_name'     => $billing_first_name.' '.$billing_last_name
+            );
+        }
+    }
+
+    return (object) $customers;
 }

@@ -39,7 +39,6 @@ if ( ! class_exists( 'Windros_Reactivate_Subscription' ) ) {
             if ( $subscription ) {
 
                 $data = array(
-                    'total_orders' => intval($subscription->total_orders)+1,
                     'status' => 'active'
                 );
     
@@ -47,7 +46,7 @@ if ( ! class_exists( 'Windros_Reactivate_Subscription' ) ) {
                     'id' => $subscription_id,
                 );
     
-                $format = array('%d', '%s');  
+                $format = array('%s');  
                 $where_format = array('%d'); 
 
                 $updated = $wpdb->update( $subscription_table, $data, $condition, $format, $where_format );
