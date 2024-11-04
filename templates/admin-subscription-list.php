@@ -65,7 +65,9 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
             $columns = [
                 'cb'            => '<input type="checkbox" />',
                 'id'            => 'ID',
-                'subscription'  => 'Product',
+                'subscription'  => 'Subscription',
+                'schedule'      => 'Delivery Schedule',
+                'upcoming'      => 'Upcoming Delivery',
                 'order_id'      => 'Order ID',
                 'customer'      => 'Subscriber',
                 'status'        => 'Status',
@@ -89,7 +91,7 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
         // Checkbox column
         function column_cb($item) {
             return sprintf(
-                '<input type="checkbox" name="custom_data[]" value="%s" />', $item['id']
+                '<input type="checkbox" class="subscription-bulk-select" name="_subscriptions[]" value="%s" />', $item['id']
             );
         }
 
@@ -109,10 +111,39 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
         
         function column_subscription($item) {
             $product = wc_get_product( $item['product_id'] );
+            
+            $subscription_url = get_admin_url(null, 'admin.php?page=windrose-subscription-detail&id='.$item['id']);
+
             return sprintf(
-                '<a href="%s" target="_blank"><strong>%s</strong></a>', 
-                get_edit_post_link($item['product_id']),
-                $product->get_name() 
+                '<a href="%s"><strong>%s</strong> <br> Quantity: %s</a>', 
+                $subscription_url,
+                $product->get_name(),
+                $item['quantity']
+            );
+            
+        }
+
+        function column_schedule($item) {
+            return sprintf(
+                '%s', 
+                WINDROS_FREQUENCY[$item['schedule']]
+            );
+            
+        }
+        function column_upcoming($item) {
+            global $wpdb;
+            $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+            $upcoming_order_data = $wpdb->get_row( 
+                $wpdb->prepare( "SELECT time_stamp FROM $subscription_order_table WHERE subscription_id = %d AND status = 'upcoming'", $item['id'] )
+            );
+            $date = '--';
+            if($upcoming_order_data){										
+                $timestamp = $upcoming_order_data->time_stamp;
+                $date = date('M d, Y', $timestamp);                
+            }
+            return sprintf(
+                '%s', 
+                $date
             );
             
         }
@@ -143,7 +174,7 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
         function column_created($item) {
             
             $timestamp = $item['time_stamp'];
-            $date = date('F d, Y', strtotime($timestamp));
+            $date = date('M d, Y', strtotime($timestamp));
             return sprintf(
                 '<span>%s</span>', 
                 $date
@@ -155,36 +186,95 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
         // Define bulk actions
         public function get_bulk_actions() {
             return [
+                'activate' => __('Activate Subscription', 'windros-subscription'),
                 'pause' => __('Pause Subscription', 'windros-subscription'),
                 'cancel' => __('Cancel Subscription', 'windros-subscription'),
                 'skip' =>__('Skip Upcoming Delivery', 'windros-subscription'),
             ];
         }
 
-        // Process bulk actions
-        public function process_bulk_action() {
-
-            if ('pause' === $this->current_action()) {
-
-                error_log('Pause Subscription');
-                // Process pause action
-                // Implement deletion logic for selected items
-            } elseif ('cancel' === $this->current_action()) {
-                // Process cancel action
-                // Implement activation logic for selected items
-            } elseif ('skip' === $this->current_action()) {
-                // Process deactivate action
-                // Implement deactivation logic for selected items
-            }
-        }
         
 
+        public function process_bulk_action() {
+            
+            // Get the list of selected items from the bulk action
+            if (isset($_POST['subscriptions']) && !empty($_POST['subscriptions'])) {
+                
+                // $selected_ids = array_map('intval', $_POST['subscriptions']);
+                $selected_ids = explode(',', $_POST['subscriptions']);
+                
+                // Perform action based on the selected bulk action
+                $current_action = ($this->current_action() != NULL) ? $this->current_action() : $_POST['action'];
+
+                $current_URL = $_SERVER['REQUEST_URI'];
+                $current_URL = str_replace('/wp-admin/','', $current_URL);
+
+                switch ($current_action) {
+                    case 'pause':
+                        
+                        foreach ($selected_ids as $id) {
+                           
+                            $pause_subscription = new Windros_Pause_Subscription();
+                            $pause_subscription->pause_subscription_action($id, 'admin');
+
+                        }
+                        // Show an admin notice for paused items
+                        // Set a transient for the admin notice
+                        set_transient('windrose_bulk_action_notice', count($selected_ids) . ' subscriptions has been paused.', 30);
+                        wp_safe_redirect(admin_url( $current_URL ));
+                        exit;
+
+                        break;
+
+                    case 'activate':
+                        foreach ($selected_ids as $id) {
+                            $activate_subscription = new Windros_Reactivate_Subscription();
+                            $activate_subscription->reactivate_subscription_action($id, 'admin');
+                        }
+                        // Show an admin notice for activated items
+                        // Set a transient for the admin notice
+                        set_transient('windrose_bulk_action_notice', count($selected_ids) . ' subscriptions has been activated.', 30);
+                        
+                        wp_safe_redirect(admin_url( $current_URL ));
+                        exit;
+                        break;
+        
+                    case 'cancel':
+                        foreach ($selected_ids as $id) {
+                            $cancel_subscription = new Windros_Cancel_Subscription();
+                            $cancel_subscription->cancel_subscription_action($id, 'admin');
+                        }
+                        // Show an admin notice for activated items
+                        // Set a transient for the admin notice
+                        set_transient('windrose_bulk_action_notice', count($selected_ids) . ' subscriptions has been cancelled.', 30);
+                        wp_safe_redirect(admin_url( $current_URL ));
+                        exit;
+                        break;
+        
+                    case 'skip':
+                        
+                        foreach ($selected_ids as $id) {
+                            $skip_subscription = new Windros_Skip_Subscription();
+                            $skip_subscription->skip_subscription_action($id, 'admin');
+                        }
+                        
+                        // Show an admin notice for skipped items
+                        // Set a transient for the admin notice
+                        set_transient('windrose_bulk_action_notice', count($selected_ids) . ' subscriptions has been skipped next deliveries.', 30);
+                        wp_safe_redirect(admin_url( $current_URL ));
+                        exit;
+                        break;
+                }
+            }
+        }
+
+                
 
 
         // Add sample data
         function get_data($search = '', $status = 'all', $product_filter = 'all', $customer_filter = 'all') {
             global $wpdb;
-            global $wp;
+            
             
             $order_by = isset( $_GET['orderby'] ) ? 'ORDER BY '. $_GET['orderby'] : 'ORDER BY id';
             $order = isset( $_GET['order'] ) ? $_GET['order'] : 'DESC';
@@ -214,7 +304,7 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
             }
 
             if(!empty($condition_params)){
-                $condition = 'WHERE '.implode(' OR ', $condition_params);
+                $condition = 'WHERE '.implode(' AND ', $condition_params);
             }
             
 
@@ -227,9 +317,9 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
         // Prepare items for the table
         function prepare_items() {
             
-            echo '<form method="post">';
+            
             $this->process_bulk_action();
-            echo '</form>';
+            
             
             $columns = $this->get_columns();
             $hidden = [];

@@ -71,6 +71,7 @@ require_once WINDROS_INC.'class-cancel-subscription.php';
 require_once WINDROS_INC.'class-skip-subscription.php';
 require_once WINDROS_INC.'class-reactivate-subscription.php';
 require_once WINDROS_INC.'class-admin-subscription-list.php';
+require_once WINDROS_INC.'class-admin-subscription-details.php';
 
 
 // Load templates
@@ -81,8 +82,9 @@ require_once WINDROS_DIR.'templates/my-account-pause-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-cancel-subscription.php';
 require_once WINDROS_DIR.'templates/my-account-skip-subscription.php';
 
-// Load admin tempplates
+// Load admin templates
 require_once WINDROS_DIR.'templates/admin-subscription-list.php';
+require_once WINDROS_DIR.'templates/admin-subscription-details.php';
 
 
 

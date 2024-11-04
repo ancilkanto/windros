@@ -19,7 +19,30 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
 
             // Nonce is valid, process form data            
             $subscription_id = intval($_POST['subscription_id']);
-            $current_user_id = get_current_user_id();
+            
+            $response = $this->pause_subscription_action($subscription_id, 'ajax');
+            // Return the user ID in the AJAX response
+            wp_send_json_success($response);
+
+            wp_die(); // Required to end the AJAX request
+        }
+
+        public function pause_subscription_action($subscription_id, $action){
+            $response = array();
+            $user_condition = '';
+            $admin_action = false;
+
+            if($action === 'ajax'){
+                $current_user_id = get_current_user_id();
+                $user_condition = sprintf('AND user_id = %s', $current_user_id);
+                
+            }
+
+            if($action === 'admin'){
+                if (current_user_can('administrator') || current_user_can('shop_manager')) {
+                    $admin_action = true;
+                }
+            }
 
             global $wpdb;
 
@@ -29,14 +52,16 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
 
             // Query to get all rows from the custom table
             // Prepare and execute the query to retrieve a single subscription
+            
             $subscription = $wpdb->get_row( 
-                $wpdb->prepare( "SELECT * FROM $subscription_table WHERE id = %d AND user_id = %s", $subscription_id, $current_user_id )
+                $wpdb->prepare( "SELECT * FROM $subscription_table WHERE id = %d $user_condition", $subscription_id )
             );
+            
 
 
-            $response = array();
+            
 
-            if ( $subscription ) {
+            if ( $subscription || $admin_action ) {
                 $data = array(
                     'status' => 'paused'
                 );
@@ -73,7 +98,9 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
                     do_action('windrose_subscription_order_cancelled', $upcoming_order_data->id);
                     do_action('windrose_subscription_order_cancelled_on_pause', $upcoming_order_data->id);
 
-                    wc_add_notice( __('The subscription has been paused!', 'windros-subscription'), 'success');
+                    if($action != 'admin'){
+                        wc_add_notice( __('The subscription has been paused!', 'windros-subscription'), 'success');
+                    }
                     
                     $response['status'] = 'success';
                     $response['message'] = __('The subscription has been paused!', 'windros-subscription');
@@ -82,19 +109,22 @@ if ( ! class_exists( 'Windros_Pause_Subscription' ) ) {
                 }else{
                     $response['status'] = 'error';
                     $response['message'] = __('Subscription Not Paused!', 'windros-subscription');
-                    wc_add_notice( __('Subscription Not Paused!', 'windros-subscription'), 'error');
+                    if($action != 'admin'){
+                        wc_add_notice( __('Subscription Not Paused!', 'windros-subscription'), 'error');
+                    }
                 }
             }else{
                 $response['status'] = 'error';
                 $response['message'] = __('Unauthorized Request!', 'windros-subscription');
-                wc_add_notice( __('Unauthorized Request!', 'windros-subscription'), 'error');
+                if($action != 'admin'){
+                    wc_add_notice( __('Unauthorized Request!', 'windros-subscription'), 'error');
+                }
             }
 
-            // Return the user ID in the AJAX response
-            wp_send_json_success($response);
-
-            wp_die(); // Required to end the AJAX request
+            return $response;
         }
+
+        
     }
 }
 
