@@ -76,14 +76,11 @@ if ( ! class_exists( 'Windros_Update_Subscription' ) ) {
                         $order_updated = $wpdb->update( $subscription_order_table, $order_update_data, $order_update_condition, $order_update_format, $order_update_where_format );
                         
                         if($order_updated){
+
                             wc_add_notice( __('Subscription and Upcoming Order Updated Successfully!', 'windros-subscription'), 'success');
                         
                             $response['status'] = 'success';
                             $response['message'] = __('Subscription Updated Successfully!', 'windros-subscription');
-                        }else{
-                            $response['status'] = 'error';
-                            $response['message'] = __('Subscription Not Updated!', 'windros-subscription');
-                            wc_add_notice( __('Subscription Not Updated!', 'windros-subscription'), 'error');
                             $upcoming_order_data = $wpdb->get_row( 
                                 $wpdb->prepare( "SELECT id FROM $subscription_order_table WHERE subscription_id = %d AND status = 'upcoming'", $subscription_id )
                             );
@@ -91,6 +88,11 @@ if ( ! class_exists( 'Windros_Update_Subscription' ) ) {
                             do_action('windrose_subscription_order_updated', $upcoming_order_data->id);
 
                             do_action('windrose_subscription_main_order_updated', $subscription_id);
+                        }else{
+                            $response['status'] = 'error';
+                            $response['message'] = __('Subscription Not Updated!', 'windros-subscription');
+                            wc_add_notice( __('Subscription Not Updated!', 'windros-subscription'), 'error');
+                            
                         }
                         
                     }else{

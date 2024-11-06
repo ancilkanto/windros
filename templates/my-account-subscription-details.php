@@ -231,7 +231,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                 }
                 
             } else {
-                echo 'No subscription found.';
+                echo __('No subscription found.', 'windros-subscription');
             }
 			
 			

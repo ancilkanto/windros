@@ -7,7 +7,8 @@ if ( ! class_exists( 'Windros_Admin_Subscription_Detail_View' ) ) {
     class Windros_Admin_Subscription_Detail_View {
         public function __construct() {
             add_action('admin_menu', [$this, 'subscription_details_menu']);
-            add_action('admin_enqueue_scripts', [$this, 'enqueue_select2_assets']);
+            add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
+            add_action('admin_notices', [$this, 'display_admin_action_notice']);
             
         }
 
@@ -23,6 +24,8 @@ if ( ! class_exists( 'Windros_Admin_Subscription_Detail_View' ) ) {
         }
 
         public function subscription_detail_view() {
+            wp_enqueue_script('windros-admin');
+
             echo '<div class="wrap">';
             echo '<h1>'. __('Subscription Details', 'windros-subscription') .'</h1>';
             echo '<br><a href="'. get_admin_url(null, 'admin.php?page=windrose-subscriptions') .'">';
@@ -38,10 +41,7 @@ if ( ! class_exists( 'Windros_Admin_Subscription_Detail_View' ) ) {
                             <?php $subscription_detail->display_subscription_details($subscription_id); ?>
                             <div class="clear"></div>                            
                         </div>
-                        <div class="panel-wrap windrose">
-                            <?php $subscription_detail->display_subscription_actions($subscription_id); ?>
-                            <div class="clear"></div>                            
-                        </div>
+                        
                         <div class="panel-wrap windrose">
                             <?php $subscription_detail->display_subscription_upcoming_delivery($subscription_id); ?>
                             <div class="clear"></div>                            
@@ -63,10 +63,25 @@ if ( ! class_exists( 'Windros_Admin_Subscription_Detail_View' ) ) {
             echo '</div>';
         }
 
-        public function enqueue_select2_assets() {
+        public function enqueue_assets() {
             // Ensure WooCommerce is active to use its assets
             wp_enqueue_style('windrose-admin', WINDROS_URL . '/assets/stylesheets/admin-style.css');
+            // wp_enqueue_script('windrose-admin', WINDROS_URL . '/assets/javascripts/admin.js', array('jquery'), false, null);
             
+        }
+
+        // Hook into admin_notices to display the transient message
+        public function display_admin_action_notice() {
+            // Check if the transient is set and display the notice
+            if ($notice = get_transient('windrose_admin_action_notice')) {
+                ?>
+                <div class="notice notice-success is-dismissible">
+                    <p><?php echo esc_html($notice); ?></p>
+                </div>
+                <?php
+                // Delete the transient to prevent repeated notices
+                delete_transient('windrose_admin_action_notice');
+            }
         }
     }
 }

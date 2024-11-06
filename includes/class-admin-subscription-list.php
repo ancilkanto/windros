@@ -31,11 +31,8 @@ if ( ! class_exists( 'Windros_Admin_Subscription_List' ) ) {
             if ( class_exists( 'Windros_Admin_Subscription_List_Template' ) ) {
                 
                 $subscription_list = new Windros_Admin_Subscription_List_Template();
-                $subscription_list->prepare_items();
-                
-                $subscription_list->display();
-                
-                              
+                $subscription_list->prepare_items();                
+                $subscription_list->display();                                              
             }
             echo '</div>';
         }
