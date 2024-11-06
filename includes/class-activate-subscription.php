@@ -7,12 +7,12 @@ if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
     class Windros_Activate_Subscription {
         public function __construct() {
             // Save the custom field value to the order
-            // add_action( 'woocommerce_order_status_completed', [$this, 'activate_subscription'], 10, 1 );
+            add_action( 'woocommerce_order_status_completed', [$this, 'activate_subscription'], 10, 1 );
 
-            add_action('woocommerce_order_action_activate_subscription', [$this, 'activate_subscription'], 10, 1 );
+            // add_action('woocommerce_order_action_activate_subscription', [$this, 'activate_subscription'], 10, 1 );
 
             // Add custom action to order actions dropdown in the order edit page
-            add_filter('woocommerce_order_actions', [$this, 'add_subscription_order_action']);
+            // add_filter('woocommerce_order_actions', [$this, 'add_subscription_order_action']);
             
         }
 
