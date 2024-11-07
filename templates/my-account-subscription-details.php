@@ -152,7 +152,7 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                             <div class="windrose-backdrop"></div>
                             <?php 
                                 if(!empty($upcoming_order_data)){
-                                    $sequence = windrose_get_day_with_suffix($upcoming_order_data['sequence']);
+                                    $sequence = windrose_get_day_with_suffix($upcoming_order_data['sequence'] + 1);
                                     $timestamp = $upcoming_order_data['time_stamp'];
                                     $date = date('F d, Y', $timestamp);
                                     
@@ -189,14 +189,15 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                             ?>
                             <?php 
                                 if(!empty($past_orders)){                                                                        
-                                    
+                                    $subscription_activated_date = strtotime($subscription['active_date']);
+                                    $subscription_active_date = date('F d, Y', $subscription_activated_date);
                             ?>
                                     <div class="past-deliveries">
                                         <h3 class="woocommerce-order-details__title"><?php echo __('Previous Orders', 'windros-subscription'); ?></h3>
                                         <ul class="past-delivery-list">
                                             <?php 
                                                 foreach($past_orders as $past_order){
-                                                    $past_sequence = windrose_get_day_with_suffix($past_order->sequence);
+                                                    $past_sequence = windrose_get_day_with_suffix($past_order->sequence + 1);
                                                     $past_timestamp = $past_order->time_stamp;
                                                     $past_date = date('F d, Y', $past_timestamp);
                                                     ?>
@@ -214,7 +215,13 @@ if ( ! class_exists( 'Windrose_Subscription_Details_Template' ) ) {
                                                     </li>
                                                     <?php
                                                 }
-                                            ?>                                                                                        
+                                            ?> 
+                                            <li class="prev-order-status-past>">
+                                                <h5 class="woocommerce-order-details__title">
+                                                    <?php echo esc_html(windrose_get_day_with_suffix(1)) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?>
+                                                </h5>
+                                                <p class="delivery-date"><?php echo esc_html($subscription_active_date); ?></p>
+                                            </li>                                                                                        
                                         </ul>
                                     </div>
                             <?php

@@ -471,11 +471,11 @@ if ( ! class_exists( 'Windros_Admin_Subscription_Details_Template' ) ) {
             
 
             if(!empty($upcoming_order_data)){
-                $sequence = windrose_get_day_with_suffix($upcoming_order_data->sequence);
+                $sequence = windrose_get_day_with_suffix($upcoming_order_data->sequence + 1);
                 $timestamp = $upcoming_order_data->time_stamp;
                 $date = date('F d, Y', $timestamp);
 
-                $this->upcoming_delivery_markup($sequence + 1, $date, true, $subscription_id, $upcoming_order_data->id);
+                $this->upcoming_delivery_markup($sequence, $date, true, $subscription_id, $upcoming_order_data->id);
             }else{                
                 $subscription = $wpdb->get_row( 
                     $wpdb->prepare( "SELECT * FROM $subscription_table WHERE id = %d", $subscription_id )                
