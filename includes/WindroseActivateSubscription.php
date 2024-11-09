@@ -1,10 +1,12 @@
 <?php
+namespace WindroseSubscription\Includes; 
+
 defined( 'WINDROS_INIT' ) || exit;  
 
 
 
-if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
-    class Windros_Activate_Subscription {
+
+    class WindroseActivateSubscription {
         public function __construct() {
             // Save the custom field value to the order
             add_action( 'woocommerce_order_status_completed', [$this, 'activate_subscription'], 10, 1 );
@@ -90,6 +92,5 @@ if ( ! class_exists( 'Windros_Activate_Subscription' ) ) {
             return $actions;
         }
     }
-}
 
-new Windros_Activate_Subscription();
+

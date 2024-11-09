@@ -1,8 +1,11 @@
 <?php
+namespace WindroseSubscription\Includes; 
+use WP_Query;
+
 defined( 'WINDROS_INIT' ) || exit;      // Exit if accessed directly.
 
-if ( ! class_exists( 'Windros_Register_Shortcodes' ) ) {
-    class Windros_Register_Shortcodes {
+
+    class WindroseRegisterShortcodes {
         
         public function __construct() {
             add_shortcode('windros-subscription-products', [$this, 'render_subscription_products']);
@@ -70,7 +73,7 @@ if ( ! class_exists( 'Windros_Register_Shortcodes' ) ) {
     }
 
 
-    new Windros_Register_Shortcodes();
+    
 
-}
+
 

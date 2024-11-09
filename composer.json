@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-4": {
+            "WindroseSubscription\\Includes\\": "includes/",
+            "WindroseSubscription\\Templates\\": "templates/"
+        }
+    }
+}

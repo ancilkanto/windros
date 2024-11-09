@@ -9,6 +9,8 @@
  * Domain Path: /languages/
  */
 
+
+
 defined( 'ABSPATH' ) || exit;
 
 $windros_subscription_frequencies = array(
@@ -53,38 +55,77 @@ require_once WINDROS_DIR.'install-plugin.php';
 register_uninstall_hook( __FILE__, 'windrose_plugin_uninstall' );
 require_once WINDROS_DIR.'uninstall-plugin.php';
 
-
-require_once WINDROS_INC.'class-product-subscription-options.php';
-require_once WINDROS_INC.'class-register-shortcodes.php';
-require_once WINDROS_INC.'class-modify-product-loop-data.php';
-require_once WINDROS_INC.'class-modify-product-listing-loop.php';
-require_once WINDROS_INC.'class-modify-product-single-page.php';
-require_once WINDROS_INC.'class-subscription-cart.php';
-require_once WINDROS_INC.'class-subscription-checkout.php';
-require_once WINDROS_INC.'class-create-subscription.php';
-require_once WINDROS_INC.'class-subscription-my-account.php';
-require_once WINDROS_INC.'class-activate-subscription.php';
-require_once WINDROS_INC.'class-create-subscription-order.php';
-require_once WINDROS_INC.'class-update-subscription.php';
-require_once WINDROS_INC.'class-pause-subscription.php';
-require_once WINDROS_INC.'class-cancel-subscription.php';
-require_once WINDROS_INC.'class-skip-subscription.php';
-require_once WINDROS_INC.'class-reactivate-subscription.php';
-require_once WINDROS_INC.'class-admin-subscription-list.php';
-require_once WINDROS_INC.'class-admin-subscription-details.php';
+require_once 'vendor/autoload.php';
 
 
-// Load templates
-require_once WINDROS_DIR.'templates/my-account-subscription-list.php';
-require_once WINDROS_DIR.'templates/my-account-subscription-details.php';
-require_once WINDROS_DIR.'templates/my-account-update-subscription.php';
-require_once WINDROS_DIR.'templates/my-account-pause-subscription.php';
-require_once WINDROS_DIR.'templates/my-account-cancel-subscription.php';
-require_once WINDROS_DIR.'templates/my-account-skip-subscription.php';
 
-// Load admin templates
-require_once WINDROS_DIR.'templates/admin-subscription-list.php';
-require_once WINDROS_DIR.'templates/admin-subscription-details.php';
+class MainWindroseClass {
+    public function __construct() {
+        $this->load_includes();
+        
+    }
+
+    public function load_includes() {
+        new WindroseSubscription\Includes\AdminProductSubscriptionOptions();  
+        new WindroseSubscription\Includes\WindroseRegisterShortcodes();  
+        new WindroseSubscription\Includes\WindroseModifyProductLoopData();
+        new WindroseSubscription\Includes\WindroseModifyProductListingLoop();
+        new WindroseSubscription\Includes\WindroseModifyProductSinglePage();
+        new WindroseSubscription\Includes\WindroseSubscriptionCart();
+        new WindroseSubscription\Includes\WindroseSubscriptionCheckout();
+        new WindroseSubscription\Includes\WindroseCreateSubscription();
+        new WindroseSubscription\Includes\WindroseMyAccountInit();
+        new WindroseSubscription\Includes\WindroseActivateSubscription();
+        new WindroseSubscription\Includes\WindroseCreateSubscriptionOrder();
+        new WindroseSubscription\Includes\WindroseUpdateSubscription();
+        new WindroseSubscription\Includes\WindrosePauseSubscription();
+        new WindroseSubscription\Includes\WindroseCancelSubscription();
+        new WindroseSubscription\Includes\WindroseSkipSubscription();
+        new WindroseSubscription\Includes\WindroseReactivateSubscription();
+        // admin side
+        new WindroseSubscription\Includes\WindroseAdminSubscriptionList();
+        new WindroseSubscription\Includes\WindroseAdminSubscriptionDetailView();
+    }
+
+    
+}
+
+new MainWindroseClass();
+
+
+
+// require_once WINDROS_INC.'class-product-subscription-options.php';
+// require_once WINDROS_INC.'class-register-shortcodes.php';
+// require_once WINDROS_INC.'class-modify-product-loop-data.php';
+// require_once WINDROS_INC.'class-modify-product-listing-loop.php';
+// require_once WINDROS_INC.'class-modify-product-single-page.php';
+// require_once WINDROS_INC.'class-subscription-cart.php';
+// require_once WINDROS_INC.'class-subscription-checkout.php';
+// require_once WINDROS_INC.'class-create-subscription.php';
+// require_once WINDROS_INC.'class-subscription-my-account.php';
+// require_once WINDROS_INC.'class-activate-subscription.php';
+// require_once WINDROS_INC.'class-create-subscription-order.php';
+// require_once WINDROS_INC.'class-update-subscription.php';
+// require_once WINDROS_INC.'class-pause-subscription.php';
+// require_once WINDROS_INC.'class-cancel-subscription.php';
+// require_once WINDROS_INC.'class-skip-subscription.php';
+// require_once WINDROS_INC.'class-reactivate-subscription.php';
+
+// require_once WINDROS_INC.'class-admin-subscription-list.php';
+// require_once WINDROS_INC.'class-admin-subscription-details.php';
+
+
+// // Load templates
+// require_once WINDROS_DIR.'templates/my-account-subscription-list.php';
+// require_once WINDROS_DIR.'templates/my-account-subscription-details.php';
+// require_once WINDROS_DIR.'templates/my-account-update-subscription.php';
+// require_once WINDROS_DIR.'templates/my-account-pause-subscription.php';
+// require_once WINDROS_DIR.'templates/my-account-cancel-subscription.php';
+// require_once WINDROS_DIR.'templates/my-account-skip-subscription.php';
+
+// // Load admin templates
+// require_once WINDROS_DIR.'templates/admin-subscription-list.php';
+// require_once WINDROS_DIR.'templates/admin-subscription-details.php';
 
 
 

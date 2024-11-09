@@ -6,5 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Windrose\\' => array($baseDir . '/includes'),
+    'WindroseSubscription\\Templates\\' => array($baseDir . '/templates'),
+    'WindroseSubscription\\Includes\\' => array($baseDir . '/includes'),
 );

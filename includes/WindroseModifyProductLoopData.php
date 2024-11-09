@@ -1,9 +1,10 @@
 <?php
+namespace WindroseSubscription\Includes; 
 
 defined( 'WINDROS_INIT' ) || exit;      // Exit if accessed directly.
 
-if ( ! class_exists( 'Windros_Modify_Product_Loop_Data' ) ) {
-    class Windros_Modify_Product_Loop_Data {
+
+    class WindroseModifyProductLoopData {
 
         public function __construct() {
             add_filter( 'woocommerce_get_price_html', [$this, 'subscription_price_suffix'], 100, 2 );
@@ -66,6 +67,5 @@ if ( ! class_exists( 'Windros_Modify_Product_Loop_Data' ) ) {
 
 
     }
-}
 
-new Windros_Modify_Product_Loop_Data();
+
