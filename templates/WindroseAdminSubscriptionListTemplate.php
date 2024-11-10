@@ -293,8 +293,7 @@ class WindroseAdminSubscriptionListTemplate extends WP_List_Table {
 
         // Search
         if (!empty($search)) {
-            $condition_params [] = sprintf("id = '%s'", $search);                
-            $condition_params [] = sprintf("order_id = '%s'", $search);                
+            $condition_params [] = sprintf("id = %d OR order_id = %d", $search, $search);                                      
         }
         
         // Status filter
