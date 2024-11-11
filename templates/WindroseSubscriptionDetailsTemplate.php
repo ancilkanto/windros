@@ -188,7 +188,7 @@ class WindroseSubscriptionDetailsTemplate {
                             </div>
                             <?php
                         }
-                        if(!empty($past_orders) || $subscription->active_date != ''){                                                 
+                        if(!empty($past_orders) || $subscription['active_date'] != ''){                                                 
                             ?>                            
                             <div class="past-deliveries">
                                 <h3 class="woocommerce-order-details__title"><?php echo __('Previous Orders', 'windros-subscription'); ?></h3>
