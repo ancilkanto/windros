@@ -22,7 +22,8 @@ defined( 'WINDROS_INIT' ) || exit;
             
             // Get the order object
             // $order = wc_get_order($order_id);
-            $order_id = $order->get_id();
+            
+            $order_id = $order;
         
             // Perform actions when the order is completed
             global $wpdb;

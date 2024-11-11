@@ -31,11 +31,10 @@ class WindroseAdminSubscriptionDetailView {
         echo '<h1>'. __('Subscription Details', 'windros-subscription') .'</h1>';
         echo '<br><a href="'. get_admin_url(null, 'admin.php?page=windrose-subscriptions') .'">';
         echo '<input type="button" id="doaction" class="button action" value="Go Back">';
-        echo '</a>';
-        if ( class_exists( 'Windros_Admin_Subscription_Details_Template' ) ) {
-            $subscription_id = $_GET['id'];
-            $subscription_detail = new WindroseAdminSubscriptionDetailsTemplate();
-            ?>
+        echo '</a>';        
+        $subscription_id = $_GET['id'];
+        $subscription_detail = new WindroseAdminSubscriptionDetailsTemplate();
+        ?>
             <div id="windrose-subscription-data" class="postbox windrose-postbox">
                 <div class="inside">
                     <div class="panel-wrap windrose">
@@ -53,10 +52,7 @@ class WindroseAdminSubscriptionDetailView {
                     </div>
                 </div>
             </div>
-            <?php
-                                                            
-        }
-
+        <?php
         echo '<br><a href="'. get_admin_url(null, 'admin.php?page=windrose-subscriptions') .'">';
         echo '<input type="button" id="doaction" class="button action" value="Go Back">';
         echo '</a>';

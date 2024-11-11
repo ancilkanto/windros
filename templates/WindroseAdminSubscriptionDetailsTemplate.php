@@ -563,8 +563,6 @@ class WindroseAdminSubscriptionDetailsTemplate {
         );
         
         if($subscription->status != 'processing'){
-            $subscription_activated_date = strtotime($subscription->active_date);
-            $subscription_active_date = date('F d, Y', $subscription_activated_date);
             ob_start();
             ?>
 
@@ -572,36 +570,47 @@ class WindroseAdminSubscriptionDetailsTemplate {
                     <h3 class="woocommerce-order-details__title"><?php echo __('Previous Orders', 'windros-subscription'); ?></h3>
                     <ul class="past-delivery-list">
                         <?php 
-                            foreach($past_orders as $past_order){
-                                $past_sequence = windrose_get_day_with_suffix(($past_order->sequence) + 1);
-                                $past_timestamp = $past_order->time_stamp;
-                                $past_date = date('F d, Y', $past_timestamp);
+                            if(!empty($past_orders)){ 
+                                foreach($past_orders as $past_order){
+                                    $past_sequence = windrose_get_day_with_suffix(($past_order->sequence) + 1);
+                                    $past_timestamp = $past_order->time_stamp;
+                                    $past_date = date('F d, Y', $past_timestamp);
+                                    ?>
+                                    <li class="prev-order-status-<?php echo esc_attr($past_order->status); ?>">
+                                        <h3 class="woocommerce-order-details__title">
+                                            <?php echo esc_html($past_sequence) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?>
+                                            <?php 
+                                                if($past_order->status != 'past'){
+                                                    echo '<sup>' . esc_html(WINDROS_SUBSCRIPTION_ORDER_STATUS[$past_order->status]) . '</sup>';
+                                                }
+                                            ?>
+                                        </h3>
+                                        <p class="delivery-date"><?php echo esc_html($past_date); ?></p>
+                                    </li>
+                                    <?php
+                                }
+                            }
+
+                            if($subscription->active_date != ''){
+                                $subscription_activated_date = strtotime($subscription->active_date);
+                                $subscription_active_date = date('F d, Y', $subscription_activated_date);
                                 ?>
-                                <li class="prev-order-status-<?php echo esc_attr($past_order->status); ?>">
+                                <li class="prev-order-status-past>">
                                     <h3 class="woocommerce-order-details__title">
-                                        <?php echo esc_html($past_sequence) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?>
-                                        <?php 
-                                            if($past_order->status != 'past'){
-                                                echo '<sup>' . esc_html(WINDROS_SUBSCRIPTION_ORDER_STATUS[$past_order->status]) . '</sup>';
-                                            }
-                                        ?>
+                                        <?php echo esc_html(windrose_get_day_with_suffix(1)) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?>
                                     </h3>
-                                    <p class="delivery-date"><?php echo esc_html($past_date); ?></p>
+                                    <p class="delivery-date"><?php echo esc_html($subscription_active_date); ?></p>
                                 </li>
                                 <?php
                             }
-                        ?>  
-                        <li class="prev-order-status-past>">
-                            <h3 class="woocommerce-order-details__title">
-                                <?php echo esc_html(windrose_get_day_with_suffix(1)) . '&nbsp;' . __('Delivery', 'windros-subscription') ; ?>
-                            </h3>
-                            <p class="delivery-date"><?php echo esc_html($subscription_active_date); ?></p>
-                        </li>                                                                                      
+                        ?>                                                                                        
                     </ul>
                 </div>
 
             <?php
-            echo ob_get_clean();
+            if(!empty($past_orders) || $subscription->active_date != ''){
+                echo ob_get_clean();
+            }
         }
     }
 }
