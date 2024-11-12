@@ -11,6 +11,8 @@ function windrose_plugin_activate() {
     global $wpdb;
     $charset_collate = $wpdb->get_charset_collate();
 
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
     $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
     $create_main_table_query = "CREATE TABLE $subscription_main_table (
         id bigint(9) NOT NULL AUTO_INCREMENT,
@@ -27,13 +29,12 @@ function windrose_plugin_activate() {
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($create_main_table_query);
 
 
     $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
 
-    $create_main_table_query = "CREATE TABLE $subscription_order_table (
+    $create_order_table_query = "CREATE TABLE $subscription_order_table (
         id bigint(9) NOT NULL AUTO_INCREMENT,
         subscription_id int NOT NULL,
         main_order_id int NOT NULL,
@@ -47,7 +48,9 @@ function windrose_plugin_activate() {
         time_stamp bigint(20) NOT NULL,
         created_at datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP
         PRIMARY KEY  (id)
-      ) $charset_collate;";
+    ) $charset_collate;";
+
+    dbDelta($create_order_table_query);
 
     flush_rewrite_rules();
     
