@@ -46,7 +46,7 @@ function windrose_plugin_activate() {
         status text NOT NULL,
         sequence int NOT NULL,
         time_stamp bigint(20) NOT NULL,
-        created_at datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP
+        created_at datetime NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
