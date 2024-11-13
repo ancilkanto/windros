@@ -27,32 +27,6 @@ class ComposerStaticInit775a33a5703b64b6ab5b897753633572
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'WindroseSubscription\\Includes\\AdminProductSubscriptionOptions' => __DIR__ . '/../..' . '/includes/AdminProductSubscriptionOptions.php',
-        'WindroseSubscription\\Includes\\WindroseActivateSubscription' => __DIR__ . '/../..' . '/includes/WindroseActivateSubscription.php',
-        'WindroseSubscription\\Includes\\WindroseAdminSubscriptionDetailView' => __DIR__ . '/../..' . '/includes/WindroseAdminSubscriptionDetailView.php',
-        'WindroseSubscription\\Includes\\WindroseAdminSubscriptionList' => __DIR__ . '/../..' . '/includes/WindroseAdminSubscriptionList.php',
-        'WindroseSubscription\\Includes\\WindroseCancelSubscription' => __DIR__ . '/../..' . '/includes/WindroseCancelSubscription.php',
-        'WindroseSubscription\\Includes\\WindroseCreateSubscription' => __DIR__ . '/../..' . '/includes/WindroseCreateSubscription.php',
-        'WindroseSubscription\\Includes\\WindroseCreateSubscriptionOrder' => __DIR__ . '/../..' . '/includes/WindroseCreateSubscriptionOrder.php',
-        'WindroseSubscription\\Includes\\WindroseModifyProductListingLoop' => __DIR__ . '/../..' . '/includes/WindroseModifyProductListingLoop.php',
-        'WindroseSubscription\\Includes\\WindroseModifyProductLoopData' => __DIR__ . '/../..' . '/includes/WindroseModifyProductLoopData.php',
-        'WindroseSubscription\\Includes\\WindroseModifyProductSinglePage' => __DIR__ . '/../..' . '/includes/WindroseModifyProductSinglePage.php',
-        'WindroseSubscription\\Includes\\WindroseMyAccountInit' => __DIR__ . '/../..' . '/includes/WindroseMyAccountInit.php',
-        'WindroseSubscription\\Includes\\WindrosePauseSubscription' => __DIR__ . '/../..' . '/includes/WindrosePauseSubscription.php',
-        'WindroseSubscription\\Includes\\WindroseReactivateSubscription' => __DIR__ . '/../..' . '/includes/WindroseReactivateSubscription.php',
-        'WindroseSubscription\\Includes\\WindroseRegisterShortcodes' => __DIR__ . '/../..' . '/includes/WindroseRegisterShortcodes.php',
-        'WindroseSubscription\\Includes\\WindroseSkipSubscription' => __DIR__ . '/../..' . '/includes/WindroseSkipSubscription.php',
-        'WindroseSubscription\\Includes\\WindroseSubscriptionCart' => __DIR__ . '/../..' . '/includes/WindroseSubscriptionCart.php',
-        'WindroseSubscription\\Includes\\WindroseSubscriptionCheckout' => __DIR__ . '/../..' . '/includes/WindroseSubscriptionCheckout.php',
-        'WindroseSubscription\\Includes\\WindroseUpdateSubscription' => __DIR__ . '/../..' . '/includes/WindroseUpdateSubscription.php',
-        'WindroseSubscription\\Templates\\WindroseAdminSubscriptionDetailsTemplate' => __DIR__ . '/../..' . '/templates/WindroseAdminSubscriptionDetailsTemplate.php',
-        'WindroseSubscription\\Templates\\WindroseAdminSubscriptionListTemplate' => __DIR__ . '/../..' . '/templates/WindroseAdminSubscriptionListTemplate.php',
-        'WindroseSubscription\\Templates\\WindroseCancelSubscriptionTemplate' => __DIR__ . '/../..' . '/templates/WindroseCancelSubscriptionTemplate.php',
-        'WindroseSubscription\\Templates\\WindrosePauseSubscriptionTemplate' => __DIR__ . '/../..' . '/templates/WindrosePauseSubscriptionTemplate.php',
-        'WindroseSubscription\\Templates\\WindroseSkipSubscriptionTemplate' => __DIR__ . '/../..' . '/templates/WindroseSkipSubscriptionTemplate.php',
-        'WindroseSubscription\\Templates\\WindroseSubscriptionDetailsTemplate' => __DIR__ . '/../..' . '/templates/WindroseSubscriptionDetailsTemplate.php',
-        'WindroseSubscription\\Templates\\WindroseSubscriptionListTemplate' => __DIR__ . '/../..' . '/templates/WindroseSubscriptionListTemplate.php',
-        'WindroseSubscription\\Templates\\WindroseUpdateSubscriptionTemplate' => __DIR__ . '/../..' . '/templates/WindroseUpdateSubscriptionTemplate.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

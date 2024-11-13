@@ -184,3 +184,33 @@ function windrose_get_customers() {
 
     return (object) $customers;
 }
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    WP_CLI::add_command('windrose-cli', 'WindroseSubscription\Includes\WindroseCLI');
+}
+
+
+// add_action('init', 'get_payment_method_example');
+
+function get_payment_method_example() {
+
+    $order_id = 308; // Example order ID
+
+    // Load the order object
+    $order = wc_get_order( $order_id );
+
+    if ( $order ) {
+        // Get the payment method ID
+        $payment_method_id = $order->get_payment_method();
+        
+        // Get the payment method title (friendly name)
+        $payment_method_title = $order->get_payment_method_title();
+
+        error_log( 'Payment Method ID: ' . $payment_method_id );
+        error_log( 'Payment Method Title: ' . $payment_method_title );
+        
+    } else {
+        error_log( 'Order not found.');
+        
+    }
+}
