@@ -15,6 +15,7 @@ class WindroseSubscriptionDetailsTemplate {
         wp_enqueue_style('windrose-myaccount', WINDROS_URL .'assets/stylesheets/my-account.css'); 
         wp_enqueue_script('windrose-my-account', WINDROS_URL .'assets/javascripts/my-account.js', array('jquery'), '1.0', true); 
         
+        
         $customer = wp_get_current_user();
 
         global $wpdb;

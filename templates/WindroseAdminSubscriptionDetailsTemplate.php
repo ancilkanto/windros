@@ -217,9 +217,6 @@ class WindroseAdminSubscriptionDetailsTemplate {
 
         global $wpdb;
 
-        $current_URL = $_SERVER['REQUEST_URI'];
-        $current_URL = str_replace('/wp-admin/','', $current_URL);
-
         // Define your custom table name (considering WordPress table prefix)
         $subscription_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
         $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
@@ -277,14 +274,14 @@ class WindroseAdminSubscriptionDetailsTemplate {
                         do_action('windrose_subscription_main_order_updated', $subscription_id);
 
                         set_transient('windrose_admin_action_notice', 'The subscription has been updated.', 30);
-                        wp_safe_redirect(admin_url( $current_URL ));
+                        wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
                     }else{
                         $response['status'] = 'error';
                         $response['message'] = __('Subscription Not Updated!', 'windros-subscription');
                         wc_add_notice( __('Subscription Not Updated!', 'windros-subscription'), 'error');
 
                         set_transient('windrose_admin_action_notice', 'The subscription has not updated.', 30);
-                        wp_safe_redirect(admin_url( $current_URL ));
+                        wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
                     }
                     
                 }else{
@@ -295,7 +292,7 @@ class WindroseAdminSubscriptionDetailsTemplate {
                     
                     do_action('windrose_subscription_main_order_updated', $subscription_id);
                     set_transient('windrose_admin_action_notice', 'The subscription has been updated.', 30);
-                    wp_safe_redirect(admin_url( $current_URL ));
+                    wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
                 }
                 
             }else{
@@ -304,7 +301,7 @@ class WindroseAdminSubscriptionDetailsTemplate {
                 wc_add_notice( __('Subscription Not Updated!', 'windros-subscription'), 'error');
 
                 set_transient('windrose_admin_action_notice', 'The subscription has not updated.', 30);
-                wp_safe_redirect(admin_url( $current_URL ));
+                wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
             }
 
             
@@ -319,9 +316,6 @@ class WindroseAdminSubscriptionDetailsTemplate {
     public function pause_subscription( $subscription_id ){
         
         global $wpdb;
-
-        $current_URL = $_SERVER['REQUEST_URI'];
-        $current_URL = str_replace('/wp-admin/','', $current_URL);
 
         // Define your custom table name (considering WordPress table prefix)
         $subscription_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
@@ -364,19 +358,16 @@ class WindroseAdminSubscriptionDetailsTemplate {
             do_action('windrose_subscription_main_order_paused', $subscription_id);
             
             set_transient('windrose_admin_action_notice', 'The subscription has been paused.', 30);
-            wp_safe_redirect(admin_url( $current_URL ));
+            wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
         }else{
             set_transient('windrose_admin_action_notice', 'The subscription has not paused.', 30);
-            wp_safe_redirect(admin_url( $current_URL ));
+            wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
         }
     }
 
 
     public function reactivate_subscription($subscription_id) {
         global $wpdb;
-
-        $current_URL = $_SERVER['REQUEST_URI'];
-        $current_URL = str_replace('/wp-admin/','', $current_URL);
 
         // Define your custom table name (considering WordPress table prefix)
         $subscription_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
@@ -399,19 +390,16 @@ class WindroseAdminSubscriptionDetailsTemplate {
             do_action('windrose_subscription_main_order_activated', $subscription_id);
             
             set_transient('windrose_admin_action_notice', 'The subscription has been activated.', 30);
-            wp_safe_redirect(admin_url( $current_URL ));
+            wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
 
         }else{
             set_transient('windrose_admin_action_notice', 'The subscription has not activated.', 30);
-            wp_safe_redirect(admin_url( $current_URL ));
+            wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
         }
     }
 
     public function cancel_subscription($subscription_id) {
         global $wpdb;
-
-        $current_URL = $_SERVER['REQUEST_URI'];
-        $current_URL = str_replace('/wp-admin/','', $current_URL);
 
         // Define your custom table name (considering WordPress table prefix)
         $subscription_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
@@ -455,10 +443,10 @@ class WindroseAdminSubscriptionDetailsTemplate {
             do_action('windrose_subscription_main_order_cancelled', $subscription_id);
 
             set_transient('windrose_admin_action_notice', 'The subscription has been cancelled.', 30);
-            wp_safe_redirect(admin_url( $current_URL ));
+            wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
         }else{
             set_transient('windrose_admin_action_notice', 'The subscription has not cancelled.', 30);
-            wp_safe_redirect(admin_url( $current_URL ));
+            wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
         }
     }
 
@@ -504,9 +492,8 @@ class WindroseAdminSubscriptionDetailsTemplate {
                 $skip_subscription->skip_subscription_action( $subscription_id, 'admin' );
 
                 set_transient('windrose_admin_action_notice', 'The subscription has skipped its next delivery.', 30);
-                $current_URL = $_SERVER['REQUEST_URI'];
-                $current_URL = str_replace('/wp-admin/','', $current_URL);
-                wp_safe_redirect(admin_url( $current_URL ));
+                
+                wp_safe_redirect(admin_url('admin.php?page=windrose-subscription-detail&id='.$subscription_id ));
 
             }
         }
