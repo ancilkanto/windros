@@ -6,6 +6,7 @@ defined( 'WINDROS_INIT' ) || exit;
 class WindroseCreateSubscriptionOrder {
     public function __construct() {
         add_action( 'windrose_subscription_main_order_activated', [$this, 'create_subscription_order'], 10, 1 );
+        add_action( 'windrose_subscription_order_executed_successfully', [$this, 'create_subscription_order'], 10, 1 );
     }
 
     public function create_subscription_order($subscription_id){
@@ -24,21 +25,21 @@ class WindroseCreateSubscriptionOrder {
 
         $schedule = $subscription['schedule'];
 
-        // Get the timezone setting from WordPress
-        $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
+        // // Get the timezone setting from WordPress
+        // $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
 
-        // If 'timezone_string' is empty, fall back to 'gmt_offset'
-        if (empty($timezone)) {
-            $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
-            $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
-        }
+        // // If 'timezone_string' is empty, fall back to 'gmt_offset'
+        // if (empty($timezone)) {
+        //     $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
+        //     $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
+        // }
 
-        // Set the PHP timezone to match WordPress
-        date_default_timezone_set($timezone);
+        // // Set the PHP timezone to match WordPress
+        // date_default_timezone_set($timezone);
 
-        $date = date("Y-m-d H:i:s");
+        // $date = date("Y-m-d H:i:s");
 
-        $timestamp = strtotime($date . ' +'.esc_html($schedule).' days');
+        $timestamp_obj = windrose_get_timestamp_object($schedule);
 
         $sequence = $subscription['total_orders'] + 1;
 
@@ -53,8 +54,8 @@ class WindroseCreateSubscriptionOrder {
                 'attempts' => 0, 
                 'status' => 'upcoming', 
                 'sequence' => $sequence,
-                'time_stamp' => $timestamp, 
-                'created_at' => $date, 
+                'time_stamp' => $timestamp_obj->timestamp, 
+                'created_at' => $timestamp_obj->date, 
             ));
 
 
