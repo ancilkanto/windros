@@ -1,0 +1,237 @@
+.subscription-status{
+    display: inline-flex;
+  line-height: 2.5em;
+  color: #454545;
+  background: #e5e5e5;
+  border-radius: 4px;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  margin: -.25em 0;
+  cursor: inherit !important;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.subscription-status span{
+    font-size: 13px;
+    display: inline-block;
+    margin: 0 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+.subscription-status.status-processing {
+    background: #c6e1c6;
+    color: #2c4700;
+}
+
+.subscription-status.status-active {
+    background: #c8d7e1;
+    color: #003d66;
+}
+
+.subscription-status.status-paused {
+    background: #f8dda7;
+    color: #573b00;
+}
+.subscription-status.status-cancel {
+    background: #eba3a3;
+    color: #570000;
+}
+.subscription-status.status-expired {
+    background: #950000;
+    color: #ffc9c9;
+}
+table.subscriptions th#id{
+    width: 100px;
+}
+table.subscriptions tbody th{
+    padding-top: 0px !important;
+}
+table.subscriptions tbody th, table.subscriptions tbody td{
+    vertical-align: middle !important;
+}
+
+.windrose-postbox{
+    margin-top: 30px;
+}
+
+.subsc-detail-page{
+    margin-top: 50px;
+}
+.sub-prdt-thumb-full{
+    width: 250px;
+    border: #eaeaea solid 1px;
+}
+.sub-prdt-thumb-full img{
+    width: 250px;
+    height: auto;
+
+}
+
+.subsc-prdt-detail{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.woocommerce-order-details__title{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.sub-prdt-price-schedule{
+    margin-top: 2px;
+}
+.sub-prdt-details{
+    padding-left: 30px;
+}
+.sub-prdt-details p{
+    margin: 0px;
+}
+.sub-prdt-details p + p{
+    margin-top: 2px;
+}
+.sub-prdt-price-schedule{
+    font-weight: 400;
+}
+
+.subscription_data_column .subscription-status{
+    padding-top: 30px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    background: transparent !important;
+}
+.subscription_data_column .subscription-status img{
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+.subscription-actions{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.subscription-actions a, .subscription-actions > input[type="button"], .subscription-actions > form {
+    display: inline-flex;
+    margin-right: 20px;
+    text-decoration: none !important;
+}
+.edit-subscription-wrapper{
+    padding: 30px;
+    background: #EFEFEF;
+    margin-top: 30px;
+}
+
+.edit-subscription-wrapper .wc-block-components-quantity-selector__input{
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+    text-align: center;
+}
+.field-wrap{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+
+.field-label{
+    width: 150px;
+}
+
+
+.upcoming-delivery{
+    margin-top: 30px;
+    background: #EFEFEF;
+    padding: 30px;
+}
+
+.upcoming-wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.upcoming-inner{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+
+.upcoming-inner .icon-wrapper img{
+    width: 30px;
+    height: auto;
+}
+
+.upcoming-inner .upcoming-details{
+    padding-left: 10px;
+}
+.upcoming-inner .upcoming-details p{
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.past-deliveries{
+    margin-top: 30px;
+    
+}
+ul.past-delivery-list{
+    margin-top: 30px;
+    position: relative;
+    list-style: none;
+    padding-left: 2rem;
+}
+
+ul.past-delivery-list::before{
+    content: '';
+    display: inline-block;
+    height: calc(100% - 60px);
+    position: absolute;
+    width: 1px;
+    background: #ccc;
+    left: 13px;
+    top: 15px;
+    z-index: 1;
+}
+
+ul.past-delivery-list li{
+    position: relative;
+    z-index: 5;
+    padding-left: 10px;
+    margin-bottom: 50px;
+}
+
+ul.past-delivery-list li::before{
+    position: absolute;
+    left: -30px;
+    top: 5px;
+    content: '';
+    display: inline-block;
+    background: url(../icons/check_circle.svg) #fff no-repeat;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+
+}
+
+ul.past-delivery-list li.prev-order-status-cancelled::before{
+    background: url(../icons/cancelled.svg) #fff no-repeat;
+}
+ul.past-delivery-list li.prev-order-status-skipped::before{
+    background: url(../icons/skipped.svg) #fff no-repeat;
+}
+
+ul.past-delivery-list li sup{
+    text-transform: uppercase;
+    background: #83c4c4;
+    padding: 5px 5px 3px 5px;
+    font-size: 12px;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ul.past-delivery-list li.prev-order-status-cancelled sup{
+    background: #cf1e1e;
+}

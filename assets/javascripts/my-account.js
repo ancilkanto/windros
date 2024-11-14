@@ -72,7 +72,7 @@ jQuery(function($) {
             // AJAX call to update subscription
             $.ajax({
                 type: 'POST',
-                url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
+                url: woocommerce_params.ajax_url, // WooCommerce AJAX URL
                 data: ajaxData,
                 beforeSend: function(response) {
                     $('.windrose-foredrop').addClass('loading');
@@ -102,7 +102,7 @@ jQuery(function($) {
             // AJAX call to pause subscription
             $.ajax({
                 type: 'POST',
-                url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
+                url: woocommerce_params.ajax_url, // WooCommerce AJAX URL
                 data: ajaxData,
                 beforeSend: function(response) {
                     $('.windrose-foredrop').addClass('loading');
@@ -125,7 +125,7 @@ jQuery(function($) {
             // AJAX call to cancel subscription
             $.ajax({
                 type: 'POST',
-                url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
+                url: woocommerce_params.ajax_url, // WooCommerce AJAX URL
                 data: ajaxData,
                 beforeSend: function(response) {
                     $('.windrose-foredrop').addClass('loading');
@@ -148,7 +148,7 @@ jQuery(function($) {
             // AJAX call to skip subscription
             $.ajax({
                 type: 'POST',
-                url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
+                url: woocommerce_params.ajax_url, // WooCommerce AJAX URL
                 data: ajaxData,
                 beforeSend: function(response) {
                     $('.windrose-foredrop').addClass('loading');
@@ -171,7 +171,7 @@ jQuery(function($) {
             // AJAX call to reactivate subscription
             $.ajax({
                 type: 'POST',
-                url: wc_add_to_cart_params.ajax_url, // WooCommerce AJAX URL
+                url: woocommerce_params.ajax_url, // WooCommerce AJAX URL
                 data: ajaxData,
                 beforeSend: function(response) {
                     _this.addClass('loading');
