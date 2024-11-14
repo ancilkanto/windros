@@ -184,3 +184,61 @@ function windrose_get_customers() {
 
     return (object) $customers;
 }
+
+
+function windrose_get_timestamp_object($offest = 0) {
+    // Get the timezone setting from WordPress
+    $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
+
+    // If 'timezone_string' is empty, fall back to 'gmt_offset'
+    if (empty($timezone)) {
+        $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
+        $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
+    }
+
+    // Set the PHP timezone to match WordPress
+    date_default_timezone_set($timezone);
+
+    $date = date("Y-m-d H:i:s");
+
+
+
+    return (object) array(
+        'date' => $date,
+        'timestamp' => strtotime($date . ' +'.esc_html($offest).' days')
+    );
+}
+
+
+
+// CALL TO CUSTOM CLI COMMAND for Cron
+
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    WP_CLI::add_command('windrose-cli', 'WindroseSubscription\Includes\WindroseCLI');
+}
+
+
+// add_action('init', 'get_payment_method_example');
+
+function get_payment_method_example() {
+
+    $order_id = 308; // Example order ID
+
+    // Load the order object
+    $order = wc_get_order( $order_id );
+
+    if ( $order ) {
+        // Get the payment method ID
+        $payment_method_id = $order->get_payment_method();
+        
+        // Get the payment method title (friendly name)
+        $payment_method_title = $order->get_payment_method_title();
+
+        error_log( 'Payment Method ID: ' . $payment_method_id );
+        error_log( 'Payment Method Title: ' . $payment_method_title );
+        
+    } else {
+        error_log( 'Order not found.');
+        
+    }
+}
